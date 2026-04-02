@@ -1,0 +1,13 @@
+{
+  "onboarding": {
+    "welcome": "Bienvenido a Rumbo",
+    "selectLanguage": "Selecciona tu idioma",
+    "selectCurrency": "Selecciona tu moneda",
+    "start": "Comenzar"
+  },
+  "nav": {
+    "map": "Mapa",
+    "scanner": "Escáner",
+    "settings": "Configuración"
+  }
+}

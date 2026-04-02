@@ -1,0 +1,13 @@
+{
+  "onboarding": {
+    "welcome": "Welcome to Rumbo",
+    "selectLanguage": "Select your language",
+    "selectCurrency": "Select your currency",
+    "start": "Get started"
+  },
+  "nav": {
+    "map": "Map",
+    "scanner": "Scanner",
+    "settings": "Settings"
+  }
+}
