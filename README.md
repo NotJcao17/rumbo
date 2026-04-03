@@ -1,36 +1,135 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Rumbo 🧭
 
-## Getting Started
+PWA para conectar turistas del Mundial FIFA 2026 con pequeños negocios locales en la Ciudad de México.
 
-First, run the development server:
+Desarrollado para el track **Fundación Coppel — Cancha justa en el mundial para los negocios turísticos locales**.
+
+---
+
+## ¿Qué es Rumbo?
+
+Rumbo permite a los turistas:
+- Generar rutas personalizadas según sus preferencias (gastronomía, cultura, compras)
+- Consultar fichas de negocios con precios convertidos a su moneda
+- Traducir menús físicos de restaurantes usando la cámara del celular
+
+No requiere descarga — funciona directo desde el navegador como PWA.
+
+---
+
+## Stack tecnológico
+
+| Componente | Tecnología |
+|-----------|-----------|
+| Framework | Next.js 16 + TypeScript (App Router) |
+| PWA | @ducanh2912/next-pwa |
+| Estilos | Tailwind CSS v4 |
+| Internacionalización | next-intl v4 |
+| Base de datos | Supabase (PostgreSQL + PostGIS) |
+| Mapas | Mapbox GL JS + Directions API |
+| OCR y traducción | Gemini Flash |
+| Conversión de divisas | AwesomeAPI |
+| Hosting | Vercel |
+
+---
+
+## Correr el proyecto localmente
+
+### Requisitos
+- Node.js 18+
+- npm
+
+### Instalación
+
+```bash
+git clone https://github.com/NotJcao17/rumbo.git
+cd rumbo
+npm install
+```
+
+### Variables de entorno
+
+Crea un archivo `.env.local` en la raíz del proyecto:
+
+```
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+NEXT_PUBLIC_MAPBOX_TOKEN=
+GEMINI_API_KEY=
+```
+
+Solicita los valores al equipo.
+
+### Desarrollo
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+> El servidor usa webpack (`--webpack`) en lugar de Turbopack por compatibilidad
+> con los paquetes instalados. Es esperado que arranque más lento que un proyecto
+> Next.js estándar.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Estructura del proyecto
 
-To learn more about Next.js, take a look at the following resources:
+```
+rumbo/
+├── app/
+│   ├── [locale]/          # Páginas con soporte de idioma (es, en, de)
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── api/
+│   │   ├── exchange-rate/ # Tipo de cambio MXN → divisa del turista
+│   │   └── translate-menu/ # OCR + traducción de menús con Gemini
+│   └── globals.css        # Estilos globales + paleta de colores
+├── components/            # Componentes reutilizables
+├── i18n/                  # Configuración de next-intl
+├── lib/                   # Clientes de Supabase y helpers
+├── messages/              # Traducciones (es.json, en.json, de.json)
+└── public/                # Íconos PWA y manifest.json
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Idiomas soportados
 
-## Deploy on Vercel
+| Código | Idioma |
+|--------|--------|
+| `en` | Inglés (default) |
+| `es` | Español |
+| `de` | Alemán |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Usuarios de la app
+
+- **Turista extranjero** — genera rutas, traduce menús, convierte precios
+- **Turista nacional** — descubre negocios auténticos fuera de zonas turísticas
+- **Dueño de negocio** — registra y administra su negocio en la plataforma
+- **Administrador** — revisa y aprueba los negocios antes de publicarlos
+
+---
+
+## Notas importantes para el equipo
+
+Antes de trabajar en el proyecto, lee el archivo `contexto-fase0.md` que documenta
+los problemas encontrados durante el setup y sus soluciones. Evitará que repitas
+los mismos errores.
+
+Los puntos más importantes:
+
+- `next.config.js` es `.js`, no `.ts`
+- El archivo de proxy se llama `proxy.ts`, no `middleware.ts`
+- Tailwind v4 no usa `tailwind.config.ts` — la paleta está en `globals.css`
+- Siempre correr con `npm run dev`, nunca agregar `--turbopack`
+
+---
+
+## Licencia
+
+Proyecto desarrollado por Indivisa Tech para hackathon. Abril 2026.
