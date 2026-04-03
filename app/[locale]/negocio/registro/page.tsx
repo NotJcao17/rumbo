@@ -55,7 +55,7 @@ export default function RegistroNegocioPage() {
       }
 
       // 3. Redirigir al panel del negocio
-      router.push(`/${locale}/mi-negocio`);
+      router.push(`/${locale}/negocio/mi-negocio`);
     } catch {
       setError('Error inesperado. Intenta de nuevo.');
     } finally {

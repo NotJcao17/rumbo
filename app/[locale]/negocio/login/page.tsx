@@ -54,15 +54,22 @@ export default function LoginNegocioPage() {
         return;
       }
 
-      // 2. Consultar el rol del usuario
-      const { data: usuario, error: queryError } = await supabase
+      // 2. Consultar el rol del usuario (puede no tener perfil si fue creado antes del registro)
+      const { data: usuario } = await supabase
         .from('usuarios_negocio')
         .select('rol')
         .eq('id', userId)
-        .single();
+        .maybeSingle();
 
-      if (queryError || !usuario) {
-        setError('No se encontró tu perfil de negocio.');
+      // Si no tiene perfil aún, crear uno con rol 'dueno'
+      if (!usuario) {
+        await supabase.from('usuarios_negocio').insert({
+          id: userId,
+          email: authData.user.email,
+          rol: 'dueno',
+          negocio_id: null,
+        });
+        router.push(`/${locale}/negocio/mi-negocio`);
         return;
       }
 
@@ -70,7 +77,7 @@ export default function LoginNegocioPage() {
       if (usuario.rol === 'admin') {
         router.push(`/${locale}/admin`);
       } else {
-        router.push(`/${locale}/mi-negocio`);
+        router.push(`/${locale}/negocio/mi-negocio`);
       }
     } catch {
       setError('Error inesperado. Intenta de nuevo.');
