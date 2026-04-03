@@ -1,15 +1,26 @@
-import { supabase } from '@/lib/supabase-client'
+'use client'
 
-export default async function Home() {
-  const { data, error } = await supabase
-    .from('categorias')
-    .select('*')
+import { useEffect } from "react"
+import { useRouter, useParams } from "next/navigation"
+import Onboarding from "@/components/Onboarding"
+
+export default function Home() {
+  const router = useRouter()
+  const params = useParams()
+  const locale = params.locale as string
+
+  useEffect(() => {
+    const lang = localStorage.getItem('lang')
+    if (lang) {
+      //una vez seleccionado el idioma se manda al mapa
+      router.push(`/${lang}/map`)
+    }
+    //si no hay lang, no hacemos nada -> se muestra el onboarding
+  }, [])
 
   return (
-    <main>
-      <h1>Categorías en BD:</h1>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
-      {error && <p>Error: {error.message}</p>}
+    <main className="min-h-screen">
+      <Onboarding />
     </main>
   )
 }
