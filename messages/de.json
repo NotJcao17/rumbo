@@ -9,5 +9,19 @@
     "map": "Karte",
     "scanner": "Scanner",
     "settings": "Einstellungen"
+  },
+  "auth": {
+    "registroTitle": "Registriere dein Geschäft",
+    "loginTitle": "Anmelden",
+    "nombre": "Vollständiger Name",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "registroBtn": "Konto erstellen",
+    "loginBtn": "Anmelden",
+    "loading": "Laden...",
+    "yaTienesCuenta": "Hast du schon ein Konto?",
+    "iniciarSesion": "Anmelden",
+    "noTienesCuenta": "Noch kein Konto?",
+    "crearCuenta": "Registrieren"
   }
 }
