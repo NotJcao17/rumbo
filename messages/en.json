@@ -9,5 +9,19 @@
     "map": "Map",
     "scanner": "Scanner",
     "settings": "Settings"
+  },
+  "auth": {
+    "registroTitle": "Register your business",
+    "loginTitle": "Sign in",
+    "nombre": "Full name",
+    "email": "Email",
+    "password": "Password",
+    "registroBtn": "Create account",
+    "loginBtn": "Sign in",
+    "loading": "Loading...",
+    "yaTienesCuenta": "Already have an account?",
+    "iniciarSesion": "Sign in",
+    "noTienesCuenta": "Don't have an account?",
+    "crearCuenta": "Sign up"
   }
 }
