@@ -65,6 +65,32 @@
       "espacio_amplio": "Espacio amplio"
     }
   },
+  "admin": {
+    "title": "Panel de administración",
+    "cerrarSesion": "Cerrar sesión",
+    "cargando": "Cargando...",
+    "tabPendientes": "Pendientes",
+    "tabAprobados": "Aprobados",
+    "sinPendientes": "No hay negocios pendientes de revisión.",
+    "sinAprobados": "Aún no hay negocios aprobados.",
+    "registrado": "Registrado",
+    "categorias": "Categorías",
+    "direccion": "Dirección",
+    "ubicacion": "Ubicación",
+    "horario": "Horario",
+    "metodosPago": "Métodos de pago",
+    "idiomasAtencion": "Idiomas de atención",
+    "accesibilidad": "Accesibilidad",
+    "rangoPrecios": "Rango de precios",
+    "esGastronomico": "Gastronómico",
+    "si": "Sí",
+    "no": "No",
+    "btnAprobar": "Aprobar",
+    "btnRechazar": "Rechazar",
+    "btnVolver": "Volver a la lista",
+    "aprobadoExito": "Negocio aprobado correctamente.",
+    "rechazadoExito": "Negocio rechazado."
+  },
   "auth": {
     "registroTitle": "Registra tu negocio",
     "loginTitle": "Inicia sesión",
