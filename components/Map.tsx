@@ -368,7 +368,7 @@ export default function Map() {
       )}
       <div style={{
         position: 'absolute',
-        bottom: 'calc(24px + env(safe-area-inset-bottom))',
+        bottom: '80px',
         left: '50%',
         transform: 'translateX(-50%)',
         display: 'flex',
