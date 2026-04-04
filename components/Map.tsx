@@ -360,7 +360,7 @@ export default function Map() {
 
       <div style={{
         position: 'absolute',
-        bottom: '24px',
+        bottom: '80px',
         left: '50%',
         transform: 'translateX(-50%)',
         display: 'flex',
