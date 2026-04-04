@@ -1,15 +1,16 @@
-import { supabase } from '@/lib/supabase-client'
+'use client'
 
-export default async function Home() {
-  const { data, error } = await supabase
-    .from('categorias')
-    .select('*')
+import dynamic from 'next/dynamic'
 
+const Map = dynamic(() => import('@/components/Map'), {
+  ssr: false,
+  loading: () => <div style={{ width: '100%', height: '100vh', background: '#f5f5f5' }} />
+})
+
+export default function Home() {
   return (
-    <main>
-      <h1>Categorías en BD:</h1>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
-      {error && <p>Error: {error.message}</p>}
+    <main style={{ width: '100%', height: '100vh', overflow: 'hidden' }}>
+      <Map />
     </main>
   )
 }
