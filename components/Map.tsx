@@ -213,7 +213,7 @@ export default function Map() {
         num_paradas: data.length,
       }
     })
-    
+
   }
 
   async function trazarRuta(negocios: Negocio[]) {
@@ -368,7 +368,7 @@ export default function Map() {
       )}
       <div style={{
         position: 'absolute',
-        bottom: '24px',
+        bottom: 'calc(24px + env(safe-area-inset-bottom))',
         left: '50%',
         transform: 'translateX(-50%)',
         display: 'flex',
