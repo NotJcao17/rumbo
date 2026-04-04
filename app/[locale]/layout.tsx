@@ -20,13 +20,15 @@ export default async function LocaleLayout({ children, params }: Props) {
   const messages = await getMessages();
 
   return (
-    <html lang={locale}>
-      <body className="pb-16">
-        <NextIntlClientProvider messages={messages}>
-          {children}
-          <BottomNav />
-        </NextIntlClientProvider>
-      </body>
-    </html>
-  );
+  <html lang={locale}>
+    <head>
+      <link rel="manifest" href="/manifest.json" />
+    </head>
+    <body>
+      <NextIntlClientProvider messages={messages}>
+        {children}
+      </NextIntlClientProvider>
+    </body>
+  </html>
+);
 }
