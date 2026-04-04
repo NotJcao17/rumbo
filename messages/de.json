@@ -65,6 +65,32 @@
       "espacio_amplio": "Breite Gänge"
     }
   },
+  "admin": {
+    "title": "Administrationspanel",
+    "cerrarSesion": "Abmelden",
+    "cargando": "Laden...",
+    "tabPendientes": "Ausstehend",
+    "tabAprobados": "Genehmigt",
+    "sinPendientes": "Keine Geschäfte zur Überprüfung.",
+    "sinAprobados": "Noch keine genehmigten Geschäfte.",
+    "registrado": "Registriert",
+    "categorias": "Kategorien",
+    "direccion": "Adresse",
+    "ubicacion": "Standort",
+    "horario": "Öffnungszeiten",
+    "metodosPago": "Zahlungsmethoden",
+    "idiomasAtencion": "Gesprochene Sprachen",
+    "accesibilidad": "Barrierefreiheit",
+    "rangoPrecios": "Preisrahmen",
+    "esGastronomico": "Gastronomie",
+    "si": "Ja",
+    "no": "Nein",
+    "btnAprobar": "Genehmigen",
+    "btnRechazar": "Ablehnen",
+    "btnVolver": "Zurück zur Liste",
+    "aprobadoExito": "Geschäft genehmigt.",
+    "rechazadoExito": "Geschäft abgelehnt."
+  },
   "auth": {
     "registroTitle": "Registriere dein Geschäft",
     "loginTitle": "Anmelden",

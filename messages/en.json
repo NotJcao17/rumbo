@@ -65,6 +65,32 @@
       "espacio_amplio": "Wide aisles"
     }
   },
+  "admin": {
+    "title": "Admin dashboard",
+    "cerrarSesion": "Sign out",
+    "cargando": "Loading...",
+    "tabPendientes": "Pending",
+    "tabAprobados": "Approved",
+    "sinPendientes": "No businesses pending review.",
+    "sinAprobados": "No approved businesses yet.",
+    "registrado": "Registered",
+    "categorias": "Categories",
+    "direccion": "Address",
+    "ubicacion": "Location",
+    "horario": "Hours",
+    "metodosPago": "Payment methods",
+    "idiomasAtencion": "Languages spoken",
+    "accesibilidad": "Accessibility",
+    "rangoPrecios": "Price range",
+    "esGastronomico": "Food & drink",
+    "si": "Yes",
+    "no": "No",
+    "btnAprobar": "Approve",
+    "btnRechazar": "Reject",
+    "btnVolver": "Back to list",
+    "aprobadoExito": "Business approved.",
+    "rechazadoExito": "Business rejected."
+  },
   "auth": {
     "registroTitle": "Register your business",
     "loginTitle": "Sign in",
