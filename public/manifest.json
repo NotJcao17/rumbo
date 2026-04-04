@@ -2,7 +2,7 @@
   "name": "Rumbo",
   "short_name": "Rumbo",
   "description": "Conecta turistas con negocios locales",
-  "start_url": "/en",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#0891B2",

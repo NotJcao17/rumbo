@@ -27,6 +27,7 @@ export default async function LocaleLayout({ children, params }: Props) {
     <body>
       <NextIntlClientProvider messages={messages}>
         {children}
+        <BottomNav />
       </NextIntlClientProvider>
     </body>
   </html>
