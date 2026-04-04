@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { supabase } from '@/lib/supabase-client'
 
 interface Categoria {
@@ -11,29 +11,44 @@ interface Categoria {
   tipo: string
 }
 
-const TIPO_LABELS: Record<string, string> = {
-  gastronomia: 'Gastronomía',
-  cultura: 'Cultura',
-  compras: 'Compras',
-  entretenimiento: 'Entretenimiento',
-}
-
 export default function RouteConfig() {
   const router = useRouter()
   const locale = useLocale()
+  const t = useTranslations('routeConfig')
 
   const [categorias, setCategorias] = useState<Categoria[]>([])
   const [seleccionadas, setSeleccionadas] = useState<string[]>([])
   const [numLugares, setNumLugares] = useState(3)
   const [cargando, setCargando] = useState(true)
 
-  function getMensajeAdvertencia(): string | null {
+  // Mapeo de tipo de BD → clave de traducción
+  const TIPO_KEYS: Record<string, string> = {
+    gastronomia: 'tipoGastronomia',
+    cultura: 'tipoCultura',
+    compras: 'tipoCompras',
+    entretenimiento: 'tipoEntretenimiento',
+  }
+
+function getMensajeAdvertencia(): string | null {
   if (seleccionadas.length === 0) return null
+
+  const lugaresLabel = numLugares === 1 ? t('lugar') : t('lugares')
+  const categoriasLabel = seleccionadas.length === 1 ? t('categoria') : t('categorias')
+
   if (seleccionadas.length > numLugares) {
-    return `Seleccionaste ${seleccionadas.length} categorías pero solo ${numLugares} lugar${numLugares === 1 ? '' : 'es'}. No podremos incluir todas las categorías en tu ruta.`
+    return t('advertenciaMasCategorias', {
+      categorias: seleccionadas.length,
+      lugares: numLugares,
+      lugaresLabel,
+    })
   }
   if (numLugares > seleccionadas.length) {
-    return `Algunos lugares de tu ruta pueden repetir categoría porque pediste ${numLugares} lugares con solo ${seleccionadas.length} categoría${seleccionadas.length === 1 ? '' : 's'}.`
+    return t('advertenciaMasLugares', {
+      lugares: numLugares,
+      categorias: seleccionadas.length,
+      lugaresLabel,
+      categoriasLabel,
+    })
   }
   return null
 }
@@ -71,7 +86,6 @@ export default function RouteConfig() {
     router.push(`/${locale}?${params.toString()}`)
   }
 
-  // Agrupar categorías por tipo
   const categoriasPorTipo = categorias.reduce<Record<string, Categoria[]>>(
     (acc, cat) => {
       if (!acc[cat.tipo]) acc[cat.tipo] = []
@@ -85,11 +99,11 @@ export default function RouteConfig() {
     <div style={{
       minHeight: '100vh',
       backgroundColor: '#F5F5F5',
-      padding: '24px 16px',
+      padding: '24px 16px 80px',
       fontFamily: 'Inter, sans-serif',
     }}>
       <h1 style={{ color: '#164E63', fontSize: '22px', fontWeight: 600, marginBottom: '24px' }}>
-        Configura tu ruta
+        {t('titulo')}
       </h1>
 
       {/* Selector de número de lugares */}
@@ -101,7 +115,7 @@ export default function RouteConfig() {
         border: '1px solid #E5E5E5',
       }}>
         <p style={{ color: '#164E63', fontWeight: 500, marginBottom: '12px' }}>
-          ¿Cuántos lugares quieres visitar?
+          {t('cuantosLugares')}
         </p>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <button
@@ -135,16 +149,16 @@ export default function RouteConfig() {
         border: '1px solid #E5E5E5',
       }}>
         <p style={{ color: '#164E63', fontWeight: 500, marginBottom: '16px' }}>
-          ¿Qué quieres hacer?
+          {t('queQuieresHacer')}
         </p>
 
         {cargando ? (
-          <p style={{ color: '#888888', fontSize: '14px' }}>Cargando categorías...</p>
+          <p style={{ color: '#888888', fontSize: '14px' }}>{t('cargando')}</p>
         ) : (
           Object.entries(categoriasPorTipo).map(([tipo, cats]) => (
             <div key={tipo} style={{ marginBottom: '16px' }}>
               <p style={{ fontSize: '12px', color: '#888888', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                {TIPO_LABELS[tipo] || tipo}
+                {TIPO_KEYS[tipo] ? t(TIPO_KEYS[tipo] as any) : tipo}
               </p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                 {cats.map(cat => {
@@ -184,12 +198,7 @@ export default function RouteConfig() {
           padding: '12px 16px',
           marginBottom: '16px',
         }}>
-          <p style={{
-            color: '#9A3412',
-            fontSize: '13px',
-            margin: 0,
-            lineHeight: '1.5',
-          }}>
+          <p style={{ color: '#9A3412', fontSize: '13px', margin: 0, lineHeight: '1.5' }}>
             ⚠️ {getMensajeAdvertencia()}
           </p>
         </div>
@@ -211,7 +220,7 @@ export default function RouteConfig() {
           cursor: seleccionadas.length === 0 ? 'not-allowed' : 'pointer',
         }}
       >
-        Generar ruta
+        {t('generarRuta')}
       </button>
     </div>
   )

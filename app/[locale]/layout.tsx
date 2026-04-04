@@ -3,6 +3,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
+import BottomNav from '@/components/BottomNav';
 
 type Props = {
   children: React.ReactNode;
@@ -20,9 +21,10 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <html lang={locale}>
-      <body>
+      <body className="pb-16">
         <NextIntlClientProvider messages={messages}>
           {children}
+          <BottomNav />
         </NextIntlClientProvider>
       </body>
     </html>

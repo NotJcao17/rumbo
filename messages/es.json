@@ -5,11 +5,37 @@
     "selectCurrency": "Selecciona tu moneda",
     "start": "Comenzar"
   },
-  "nav": {
-    "map": "Mapa",
-    "scanner": "Escáner",
-    "settings": "Configuración"
-  },
+  "map": {
+    "recorridoTotal": "🚶 Recorrido total:",
+    "categoria": "Categoría:",
+    "rangoPrecios": "Rango de precios:",
+    "cambiarRuta": "Cambiar ruta",
+    "generarRuta": "Generar ruta",
+    "borrarRuta": "Borrar ruta",
+    "desdeUbicacion": "m desde tu ubicación"
+},
+  "routeConfig": {
+    "titulo": "Configura tu ruta",
+    "cuantosLugares": "¿Cuántos lugares quieres visitar?",
+    "queQuieresHacer": "¿Qué quieres hacer?",
+    "cargando": "Cargando categorías...",
+    "generarRuta": "Generar ruta",
+    "advertenciaMasCategorias": "Seleccionaste {categorias} categorías pero solo {lugares} {lugaresLabel}. No podremos incluir todas las categorías en tu ruta.",
+    "advertenciaMasLugares": "Algunos lugares de tu ruta pueden repetir categoría porque pediste {lugares} {lugaresLabel} con solo {categorias} {categoriasLabel}.",
+    "lugar": "lugar",
+    "lugares": "lugares",
+    "categoria": "categoría",
+    "categorias": "categorías",
+    "tipoGastronomia": "Gastronomía",
+    "tipoCultura": "Cultura",
+    "tipoCompras": "Compras",
+    "tipoEntretenimiento": "Entretenimiento"
+},
+"nav": {
+  "mapa": "Mapa",
+  "escaner": "Escáner",
+  "config": "Config"
+},
   "negocio": {
     "titleRegistrar": "Registrar mi negocio",
     "titleEditar": "Editar mi negocio",
@@ -104,5 +130,12 @@
     "iniciarSesion": "Inicia sesión",
     "noTienesCuenta": "¿No tienes cuenta?",
     "crearCuenta": "Regístrate"
-  }
+  },
+  "settings": {
+  "titulo": "Configuración",
+  "subtitulo": "Cambia tu idioma y moneda",
+  "idioma": "Idioma",
+  "moneda": "Moneda",
+  "guardar": "Guardar"
+}
 }

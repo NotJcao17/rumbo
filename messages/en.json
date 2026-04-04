@@ -5,11 +5,37 @@
     "selectCurrency": "Select your currency",
     "start": "Get started"
   },
-  "nav": {
-    "map": "Map",
-    "scanner": "Scanner",
-    "settings": "Settings"
-  },
+  "map": {
+  "recorridoTotal": "🚶 Total route:",
+  "categoria": "Category:",
+  "rangoPrecios": "Price range:",
+  "cambiarRuta": "Change route",
+  "generarRuta": "Generate route",
+  "borrarRuta": "Clear route",
+  "desdeUbicacion": "m from your location"
+},
+"routeConfig": {
+  "titulo": "Configure your route",
+  "cuantosLugares": "How many places would you like to visit?",
+  "queQuieresHacer": "What would you like to do?",
+  "cargando": "Loading categories...",
+  "generarRuta": "Generate route",
+  "advertenciaMasCategorias": "You selected {categorias} categories but only {lugares} {lugaresLabel}. We won't be able to include all categories in your route.",
+  "advertenciaMasLugares": "Some places in your route may repeat a category because you requested {lugares} {lugaresLabel} with only {categorias} {categoriasLabel}.",
+  "lugar": "place",
+  "lugares": "places",
+  "categoria": "category",
+  "categorias": "categories",
+  "tipoGastronomia": "Gastronomy",
+  "tipoCultura": "Culture",
+  "tipoCompras": "Shopping",
+  "tipoEntretenimiento": "Entertainment"
+},
+"nav": {
+  "mapa": "Map",
+  "escaner": "Scanner",
+  "config": "Settings"
+},
   "negocio": {
     "titleRegistrar": "Register my business",
     "titleEditar": "Edit my business",
@@ -104,5 +130,12 @@
     "iniciarSesion": "Sign in",
     "noTienesCuenta": "Don't have an account?",
     "crearCuenta": "Sign up"
+  },
+  "settings": {
+  "titulo": "Settings",
+  "subtitulo": "Change your language and currency",
+  "idioma": "Language",
+  "moneda": "Currency",
+  "guardar": "Save"
   }
 }

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { useRouter } from 'next/navigation'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase-client'
 
@@ -25,6 +25,7 @@ interface Negocio {
 }
 
 export default function Map() {
+  const t = useTranslations('map')
   const router = useRouter()
   const locale = useLocale()
   const searchParams = useSearchParams()
@@ -42,6 +43,11 @@ export default function Map() {
   const num = searchParams.get('num')
   const modoRuta = !!categorias && !!num
 
+  // Guardamos t en un ref para usarlo dentro de funciones async
+  // (las funciones async no pueden leer hooks directamente si se llaman fuera del ciclo de React)
+  const tRef = useRef(t)
+  useEffect(() => { tRef.current = t }, [t])
+
   useEffect(() => {
     if (map.current) return
     if (!mapContainer.current) return
@@ -55,15 +61,12 @@ export default function Map() {
 
     map.current.addControl(new mapboxgl.NavigationControl(), 'top-right')
 
-    // Geolocalización del turista
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { longitude, latitude } = position.coords
           userLocation.current = [longitude, latitude]
 
-          // Solo mover el mapa a la ubicación del turista si NO estamos en modo ruta
-          // En modo ruta, fitBounds se encarga de ajustar la vista a las paradas
           if (!modoRuta) {
             map.current?.flyTo({
               center: [longitude, latitude],
@@ -122,8 +125,8 @@ export default function Map() {
       const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
         <div style="font-family: Inter, sans-serif; padding: 4px;">
           <p style="font-weight: 600; margin: 0 0 4px 0; color: #164E63;">${negocio.nombre}</p>
-          <p style="margin: 0 0 2px 0; font-size: 12px; color: #888888;">Categoría: ${negocio.categoria_principal}</p>
-          <p style="margin: 0; font-size: 12px; color: #888888;">Rango de precios: $${negocio.rango_precios} MXN</p>
+          <p style="margin: 0 0 2px 0; font-size: 12px; color: #888888;">${tRef.current('categoria')} ${negocio.categoria_principal}</p>
+          <p style="margin: 0; font-size: 12px; color: #888888;">${tRef.current('rangoPrecios')} $${negocio.rango_precios} MXN</p>
         </div>
       `)
 
@@ -137,7 +140,6 @@ export default function Map() {
   }
 
   async function generarRuta() {
-    // Esperar a que tengamos la ubicación del usuario
     let intentos = 0
     while (!userLocation.current && intentos < 20) {
       await new Promise(r => setTimeout(r, 300))
@@ -161,7 +163,7 @@ export default function Map() {
     }
 
     setParadas(data)
-    // Dibujar marcadores cian numerados
+
     data.forEach((negocio: Negocio, index: number) => {
       const el = document.createElement('div')
       el.style.width = '28px'
@@ -182,8 +184,8 @@ export default function Map() {
       const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
         <div style="font-family: Inter, sans-serif; padding: 4px;">
           <p style="font-weight: 600; margin: 0 0 4px 0; color: #164E63;">${index + 1}. ${negocio.nombre}</p>
-          <p style="margin: 0 0 2px 0; font-size: 12px; color: #888888;">Categoría: ${negocio.categoria_principal}</p>
-          <p style="margin: 0; font-size: 12px; color: #888888;">Rango de precios: $${negocio.rango_precios} MXN</p>
+          <p style="margin: 0 0 2px 0; font-size: 12px; color: #888888;">${tRef.current('categoria')} ${negocio.categoria_principal}</p>
+          <p style="margin: 0; font-size: 12px; color: #888888;">${tRef.current('rangoPrecios')} $${negocio.rango_precios} MXN</p>
         </div>
       `)
 
@@ -195,17 +197,14 @@ export default function Map() {
       routeMarkers.current.push(marker)
     })
 
-    // Trazar la ruta con Mapbox Directions API
     await trazarRuta(data)
 
-    // Ajustar la vista para ver todas las paradas
     const bounds = new mapboxgl.LngLatBounds()
     data.forEach((negocio: Negocio) => {
       bounds.extend([negocio.longitud, negocio.latitud])
     })
     map.current?.fitBounds(bounds, { padding: 80 })
 
-    // Registrar evento en logs_eventos
     await supabase.from('logs_eventos').insert({
       tipo: 'ruta_generada',
       metadata: {
@@ -213,7 +212,6 @@ export default function Map() {
         num_paradas: data.length,
       }
     })
-
   }
 
   async function trazarRuta(negocios: Negocio[]) {
@@ -230,7 +228,6 @@ export default function Map() {
 
     const ruta = data.routes[0]
 
-    // Agregar la línea de la ruta al mapa
     if (map.current?.getSource('ruta')) {
       (map.current.getSource('ruta') as mapboxgl.GeoJSONSource).setData(ruta.geometry)
     } else {
@@ -255,23 +252,19 @@ export default function Map() {
       })
     }
 
-    // Calcular tiempo total en minutos
     const minutos = Math.round(ruta.duration / 60)
     setTiempoTotal(minutos)
   }
 
   function limpiarRuta() {
-    // Eliminar marcadores de ruta
     routeMarkers.current.forEach(marker => marker.remove())
     routeMarkers.current = []
     setParadas([])
     setTiempoTotal(null)
 
-    // Eliminar línea de ruta del mapa
     if (map.current?.getLayer('ruta')) map.current.removeLayer('ruta')
     if (map.current?.getSource('ruta')) map.current.removeSource('ruta')
 
-    // Navegar a la URL limpia sin parámetros
     router.push(`/${locale}`)
   }
 
@@ -296,7 +289,7 @@ export default function Map() {
         ref={mapContainer}
         style={{ width: '100%', height: '100vh' }}
       />
-      {/* Panel de información de ruta */}
+
       {modoRuta && paradas.length > 0 && (
         <div style={{
           position: 'absolute',
@@ -309,7 +302,6 @@ export default function Map() {
           fontFamily: 'Inter, sans-serif',
           overflow: 'hidden',
         }}>
-          {/* Encabezado fijo */}
           {tiempoTotal !== null && (
             <div style={{
               padding: '10px 16px',
@@ -321,11 +313,10 @@ export default function Map() {
                 fontSize: '14px',
                 margin: 0,
               }}>
-                🚶 Recorrido total: {tiempoTotal} min
+                {t('recorridoTotal')} {tiempoTotal} min
               </p>
             </div>
           )}
-          {/* Lista de paradas con scroll */}
           <div style={{
             maxHeight: '22vh',
             overflowY: 'auto',
@@ -358,7 +349,7 @@ export default function Map() {
                     {parada.nombre}
                   </p>
                   <p style={{ margin: 0, fontSize: '11px', color: '#888888' }}>
-                    {parada.categoria_principal} · {Math.round(parada.distancia)} m desde tu ubicación
+                    {parada.categoria_principal} · {Math.round(parada.distancia)} {t('desdeUbicacion')}
                   </p>
                 </div>
               </div>
@@ -366,6 +357,7 @@ export default function Map() {
           </div>
         </div>
       )}
+
       <div style={{
         position: 'absolute',
         bottom: '80px',
@@ -379,11 +371,14 @@ export default function Map() {
         <button
           onClick={() => router.push(`/${locale}/route-config`)}
           style={{
+            position: 'fixed',
+            bottom: '80px',
             backgroundColor: '#0891B2',
             color: 'white',
             border: 'none',
             borderRadius: '999px',
             padding: '12px 20px',
+            marginBottom: '20px',
             fontSize: '14px',
             fontWeight: 600,
             cursor: 'pointer',
@@ -392,7 +387,7 @@ export default function Map() {
             whiteSpace: 'nowrap',
           }}
         >
-          {modoRuta ? 'Cambiar ruta' : 'Generar ruta'}
+          {modoRuta ? t('cambiarRuta') : t('generarRuta')}
         </button>
 
         {modoRuta && (
@@ -412,7 +407,7 @@ export default function Map() {
               whiteSpace: 'nowrap',
             }}
           >
-            Borrar ruta
+            {t('borrarRuta')}
           </button>
         )}
 

@@ -5,11 +5,37 @@
     "selectCurrency": "Währung auswählen",
     "start": "Loslegen"
   },
-  "nav": {
-    "map": "Karte",
-    "scanner": "Scanner",
-    "settings": "Einstellungen"
-  },
+  "map": {
+  "recorridoTotal": "🚶 Gesamtstrecke:",
+  "categoria": "Kategorie:",
+  "rangoPrecios": "Preisbereich:",
+  "cambiarRuta": "Route ändern",
+  "generarRuta": "Route erstellen",
+  "borrarRuta": "Route löschen",
+  "desdeUbicacion": "m von deinem Standort"
+},
+"routeConfig": {
+  "titulo": "Route konfigurieren",
+  "cuantosLugares": "Wie viele Orte möchten Sie besuchen?",
+  "queQuieresHacer": "Was möchten Sie tun?",
+  "cargando": "Kategorien werden geladen...",
+  "generarRuta": "Route erstellen",
+  "advertenciaMasCategorias": "Sie haben {categorias} Kategorien ausgewählt, aber nur {lugares} {lugaresLabel}. Wir können nicht alle Kategorien in Ihre Route aufnehmen.",
+  "advertenciaMasLugares": "Einige Orte in Ihrer Route können eine Kategorie wiederholen, da Sie {lugares} {lugaresLabel} mit nur {categorias} {categoriasLabel} angefordert haben.",
+  "lugar": "Ort",
+  "lugares": "Orte",
+  "categoria": "Kategorie",
+  "categorias": "Kategorien",
+  "tipoGastronomia": "Gastronomie",
+  "tipoCultura": "Kultur",
+  "tipoCompras": "Einkaufen",
+  "tipoEntretenimiento": "Unterhaltung"
+},
+"nav": {
+  "mapa": "Karte",
+  "escaner": "Scanner",
+  "config": "Einstellungen"
+},
   "negocio": {
     "titleRegistrar": "Mein Geschäft registrieren",
     "titleEditar": "Mein Geschäft bearbeiten",
@@ -104,5 +130,12 @@
     "iniciarSesion": "Anmelden",
     "noTienesCuenta": "Noch kein Konto?",
     "crearCuenta": "Registrieren"
+  },
+  "settings": {
+  "titulo": "Einstellungen",
+  "subtitulo": "Sprache und Währung ändern",
+  "idioma": "Sprache",
+  "moneda": "Währung",
+  "guardar": "Speichern"
   }
 }
