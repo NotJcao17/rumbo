@@ -137,5 +137,19 @@
   "idioma": "Sprache",
   "moneda": "Währung",
   "guardar": "Speichern"
-  }
+  },
+  "scanner": {
+  "titulo": "Menü-Scanner",
+  "descripcion": "Mach ein Foto vom Menü und wir übersetzen es in deine Sprache mit Preisen in deiner Währung.",
+  "tomarFoto": "Foto vom Menü aufnehmen",
+  "volverMapa": "Zurück zur Karte",
+  "traduciendo": "Menü wird übersetzt...",
+  "espera": "Das kann einige Sekunden dauern",
+  "errorTitulo": "Wir konnten das Menü nicht lesen",
+  "errorConsejo": "Versuche es bei besserer Beleuchtung oder fotografiere nur das Menü.",
+  "intentarDeNuevo": "Erneut versuchen",
+  "otraFoto": "Weiteres Foto aufnehmen",
+  "platillosDetectados": "Gericht erkannt",
+  "platillosDetectadosPlural": "Gerichte erkannt"
+}
 }

@@ -9,9 +9,6 @@ const nextConfig = withPWA({
   skipWaiting: true,
   disable: process.env.NODE_ENV === 'development',
 })(withNextIntl({
-  experimental: {
-    turbo: false,  
-  },
   // aquí irán otras configuraciones de Next.js más adelante
 }));
 

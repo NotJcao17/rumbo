@@ -137,5 +137,19 @@
   "idioma": "Idioma",
   "moneda": "Moneda",
   "guardar": "Guardar"
+},
+"scanner": {
+  "titulo": "Escáner de menú",
+  "descripcion": "Toma una foto del menú y lo traduciremos a tu idioma con precios en tu moneda.",
+  "tomarFoto": "Tomar foto del menú",
+  "volverMapa": "Volver al mapa",
+  "traduciendo": "Traduciendo menú...",
+  "espera": "Esto puede tardar unos segundos",
+  "errorTitulo": "No pudimos leer el menú",
+  "errorConsejo": "Intenta con mejor iluminación o encuadrando solo el menú en la foto.",
+  "intentarDeNuevo": "Intentar de nuevo",
+  "otraFoto": "Tomar otra foto",
+  "platillosDetectados": "platillo detectado",
+  "platillosDetectadosPlural": "platillos detectados"
 }
 }
