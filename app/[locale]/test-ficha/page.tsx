@@ -19,7 +19,6 @@ export default function TestFicha() {
     <main className="min-h-screen bg-bg-page flex items-center justify-center p-4">
       <BusinessCard
         negocio={NEGOCIO_FALSO}
-        onTraducirMenu={() => alert('Ir al escáner')}
       />
     </main>
   )

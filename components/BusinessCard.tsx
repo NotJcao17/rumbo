@@ -1,6 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useLocale } from 'next-intl'
 
 // Tipo que describe la forma de un negocio (igual que la BD)
 type Negocio = {
@@ -39,12 +41,13 @@ const ACCESIBILIDAD_LABELS: Record<string, string> = {
 
 type Props = {
   negocio: Negocio
-  onTraducirMenu?: () => void
 }
 
-export default function BusinessCard({ negocio, onTraducirMenu }: Props) {
+export default function BusinessCard({ negocio }: Props) {
   const [rate, setRate] = useState<number | null>(null)
   const [currency, setCurrency] = useState('USD')  //useState es por default?
+  const router = useRouter()
+  const locale = useLocale()
 
   useEffect(() => { //useEffect se utiliza para efectos secundarios, ej: llamadas a API, suscripciones 
   // o manipulación de DOM tras el renderizado de componentes funcionales
@@ -167,9 +170,9 @@ export default function BusinessCard({ negocio, onTraducirMenu }: Props) {
 
       {/* Botones de acción */}
       <div className="flex flex-col gap-3 pt-2">
-        {negocio.es_gastronomico && onTraducirMenu && (
+        {negocio.es_gastronomico && (
           <button
-            onClick={onTraducirMenu}
+            onClick={() => router.push(`/${locale}/scanner`)}
             className="w-full bg-accent text-white py-3 rounded-xl font-medium"
           >
             📷 Traducir menú
