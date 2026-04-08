@@ -50,7 +50,12 @@ export default function Map() {
   // Guardamos t en un ref para usarlo dentro de funciones async
   // (las funciones async no pueden leer hooks directamente si se llaman fuera del ciclo de React)
   const tRef = useRef(t)
-  useEffect(() => { tRef.current = t }, [t])
+  const tCats = useTranslations('categories')
+  const tCatsRef = useRef(tCats)
+  useEffect(() => { 
+    tRef.current = t
+    tCatsRef.current = tCats
+  }, [t, tCats])
 
   useEffect(() => {
     if (map.current) return
@@ -153,9 +158,8 @@ export default function Map() {
       const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
         <div style="font-family: Inter, sans-serif; padding: 4px; min-width: 160px;">
           <p style="font-weight: 600; margin: 0 0 4px 0; color: #164E63;">${negocio.nombre}</p>
-          <p style="margin: 0 0 2px 0; font-size: 12px; color: #888888;">${tRef.current('categoria')} ${negocio.categoria_principal.replace(/_/g, ' ')}</p>
-          <p style="margin: 0 0 8px 0; font-size: 12px; color: #888888;">${tRef.current('rangoPrecios')} $${negocio.rango_precios} MXN${precioConvertido(negocio.rango_precios)}</p>
-          <button onclick="window.rumboVerFicha('${negocio.id}')" style="width:100%;padding:6px 0;background:#0891B2;color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;">Ver ficha →</button>
+          <p style="margin: 0 0 2px 0; font-size: 12px; color: #888888;">${tRef.current('categoria')} ${tCatsRef.current(negocio.categoria_principal as any)}</p>
+          <p style="margin: 0; font-size: 12px; color: #888888;">${tRef.current('rangoPrecios')} $${negocio.rango_precios} MXN</p>
         </div>
       `)
 
@@ -250,8 +254,8 @@ export default function Map() {
       const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
         <div style="font-family: Inter, sans-serif; padding: 4px;">
           <p style="font-weight: 600; margin: 0 0 4px 0; color: #164E63;">${index + 1}. ${negocio.nombre}</p>
-          <p style="margin: 0 0 2px 0; font-size: 12px; color: #888888;">Categoría: ${negocio.categoria_principal.replace(/_/g, ' ')}</p>
-          <p style="margin: 0; font-size: 12px; color: #888888;">Rango de precios: $${negocio.rango_precios} MXN</p>
+          <p style="margin: 0 0 2px 0; font-size: 12px; color: #888888;">${tRef.current('categoria')} ${tCatsRef.current(negocio.categoria_principal as any)}</p>
+          <p style="margin: 0; font-size: 12px; color: #888888;">${tRef.current('rangoPrecios')} $${negocio.rango_precios} MXN</p>
         </div>
       `)
 
@@ -419,7 +423,7 @@ export default function Map() {
                     {parada.nombre}
                   </p>
                   <p style={{ margin: 0, fontSize: '11px', color: '#888888' }}>
-                    {parada.categoria_principal.replace(/_/g, ' ')}{parada.distancia != null ? ` · ${Math.round(parada.distancia)} ${t('desdeUbicacion')}` : ''}
+                    {tCats(parada.categoria_principal as any)} · {Math.round(parada.distancia)} {t('desdeUbicacion')}
                   </p>
                 </div>
               </div>
@@ -498,7 +502,7 @@ export default function Map() {
               whiteSpace: 'nowrap',
             }}
           >
-            📍 Google Maps
+            {t('googleMaps')}
           </button>
         )}
       </div>

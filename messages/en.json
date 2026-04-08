@@ -12,7 +12,8 @@
   "cambiarRuta": "Change route",
   "generarRuta": "Generate route",
   "borrarRuta": "Clear route",
-  "desdeUbicacion": "m from your location"
+  "desdeUbicacion": "m from your location",
+  "googleMaps": "📍 Google Maps"
 },
 "routeConfig": {
   "titulo": "Configure your route",
@@ -171,6 +172,38 @@
   "menuBraille": "Braille menu",
   "espacioAmplio": "Wide aisles",
   "a": "",
-  "distanciaEstadio": "from Estadio Azteca"
+  "distanciaEstadio": "from Estadio Azteca",
+  "metodosPagoMap": {
+    "efectivo": "💵 Cash",
+    "tarjeta_debito": "💳 Debit",
+    "tarjeta_credito": "💳 Credit",
+    "transferencia": "📲 Transfer"
+  },
+  "idiomasMap": {
+    "es": "🇲🇽 Spanish",
+    "en": "🇺🇸 English",
+    "de": "🇩🇪 German"
+  },
+  "accesibilidadMap": {
+    "rampa": "♿ Ramp",
+    "bano_accesible": "🚻 Accessible restroom",
+    "menu_braille": "👆 Braille menu",
+    "espacio_amplio": "↔️ Wide aisles"
+  }
+},
+"categories": {
+  "desayuno": "Breakfast",
+  "comida": "Lunch",
+  "cena": "Dinner",
+  "cafe": "Coffee",
+  "bar": "Bar",
+  "museo": "Museum",
+  "galeria": "Gallery",
+  "sitio_historico": "Historic site",
+  "tienda": "Shop",
+  "mercado": "Market",
+  "parque": "Park",
+  "otros": "Other",
+  "otro": "Other"
 }
 }

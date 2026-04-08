@@ -12,7 +12,8 @@
     "cambiarRuta": "Cambiar ruta",
     "generarRuta": "Generar ruta",
     "borrarRuta": "Borrar ruta",
-    "desdeUbicacion": "m desde tu ubicación"
+    "desdeUbicacion": "m desde tu ubicación",
+    "googleMaps": "📍 Google Maps"
 },
   "routeConfig": {
     "titulo": "Configura tu ruta",
@@ -172,6 +173,38 @@
   "menuBraille": "Menú braille",
   "espacioAmplio": "Espacio amplio",
   "a": "A",
-  "distanciaEstadio": "del Estadio Azteca"
+  "distanciaEstadio": "del Estadio Azteca",
+  "metodosPagoMap": {
+    "efectivo": "💵 Efectivo",
+    "tarjeta_debito": "💳 Débito",
+    "tarjeta_credito": "💳 Crédito",
+    "transferencia": "📲 Transferencia"
+  },
+  "idiomasMap": {
+    "es": "🇲🇽 Español",
+    "en": "🇺🇸 English",
+    "de": "🇩🇪 Deutsch"
+  },
+  "accesibilidadMap": {
+    "rampa": "♿ Rampa",
+    "bano_accesible": "🚻 Baño accesible",
+    "menu_braille": "👆 Menú braille",
+    "espacio_amplio": "↔️ Espacio amplio"
+  }
+},
+"categories": {
+  "desayuno": "Desayuno",
+  "comida": "Comida",
+  "cena": "Cena",
+  "cafe": "Café",
+  "bar": "Bar",
+  "museo": "Museo",
+  "galeria": "Galería",
+  "sitio_historico": "Sitio histórico",
+  "tienda": "Tienda",
+  "mercado": "Mercado",
+  "parque": "Parque",
+  "otros": "Otros",
+  "otro": "Otro"
 }
 }
