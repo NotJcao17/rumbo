@@ -107,6 +107,31 @@ export default function Map() {
   }, [])
 
   async function cargarNegocios() {
+    // Handler global para que el botón "Ver ficha" dentro del popup HTML pueda navegar
+    ;(window as any).rumboVerFicha = (id: string) => {
+      router.push(`/${locale}/negocio/${id}`)
+    }
+
+    // Obtener tipo de cambio del turista una sola vez
+    const savedCurrency = localStorage.getItem('currency') || 'USD'
+    let exchangeRate: number | null = null
+    if (savedCurrency !== 'MXN') {
+      try {
+        const res = await fetch(`/api/exchange-rate?currency=${savedCurrency}`)
+        const data = await res.json()
+        exchangeRate = typeof data.rate === 'number' ? data.rate : null
+      } catch {
+        exchangeRate = null
+      }
+    }
+
+    function precioConvertido(rango: string): string {
+      if (!exchangeRate || savedCurrency === 'MXN') return ''
+      const [min, max] = rango.split('-').map(Number)
+      if (isNaN(min) || isNaN(max)) return ''
+      return ` (~${(min * exchangeRate).toFixed(0)}–${(max * exchangeRate).toFixed(0)} ${savedCurrency})`
+    }
+
     const { data, error } = await supabase.rpc('get_negocios_con_coordenadas')
 
     if (error) {
@@ -126,10 +151,11 @@ export default function Map() {
       el.style.cursor = 'pointer'
 
       const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
-        <div style="font-family: Inter, sans-serif; padding: 4px;">
+        <div style="font-family: Inter, sans-serif; padding: 4px; min-width: 160px;">
           <p style="font-weight: 600; margin: 0 0 4px 0; color: #164E63;">${negocio.nombre}</p>
           <p style="margin: 0 0 2px 0; font-size: 12px; color: #888888;">${tRef.current('categoria')} ${negocio.categoria_principal.replace(/_/g, ' ')}</p>
-          <p style="margin: 0; font-size: 12px; color: #888888;">${tRef.current('rangoPrecios')} $${negocio.rango_precios} MXN</p>
+          <p style="margin: 0 0 8px 0; font-size: 12px; color: #888888;">${tRef.current('rangoPrecios')} $${negocio.rango_precios} MXN${precioConvertido(negocio.rango_precios)}</p>
+          <button onclick="window.rumboVerFicha('${negocio.id}')" style="width:100%;padding:6px 0;background:#0891B2;color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;">Ver ficha →</button>
         </div>
       `)
 
