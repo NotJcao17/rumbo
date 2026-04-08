@@ -15,6 +15,7 @@ export default function RouteConfig() {
   const router = useRouter()
   const locale = useLocale()
   const t = useTranslations('routeConfig')
+  const tCats = useTranslations('categories')
 
   const [categorias, setCategorias] = useState<Categoria[]>([])
   const [seleccionadas, setSeleccionadas] = useState<string[]>([])
@@ -179,7 +180,7 @@ function getMensajeAdvertencia(): string | null {
                         fontWeight: activa ? 500 : 400,
                       }}
                     >
-                      {cat.nombre}
+                      {tCats(cat.id as any)}
                     </button>
                   )
                 })}

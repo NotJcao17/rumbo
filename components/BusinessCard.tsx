@@ -37,26 +37,7 @@ export default function BusinessCard({ negocio, onTraducirMenu }: Props) {
   const locale = useLocale()
   const t = useTranslations('businessCard')
 
-  // Mapeos de valores de BD a texto legible — usan t() para traducir
-  const METODOS_PAGO_LABELS: Record<string, string> = {
-    efectivo: `💵 ${t('efectivo')}`,
-    tarjeta_debito: `💳 ${t('tarjetaDebito')}`,
-    tarjeta_credito: `💳 ${t('tarjetaCredito')}`,
-    transferencia: `📲 ${t('transferencia')}`,
-  }
 
-  const IDIOMAS_LABELS: Record<string, string> = {
-    es: '🇲🇽 Español',
-    en: '🇺🇸 English',
-    de: '🇩🇪 Deutsch',
-  }
-
-  const ACCESIBILIDAD_LABELS: Record<string, string> = {
-    rampa: `♿ ${t('rampa')}`,
-    bano_accesible: `🚻 ${t('banoAccesible')}`,
-    menu_braille: `👆 ${t('menuBraille')}`,
-    espacio_amplio: `↔️ ${t('espacioAmplio')}`,
-  }
 
   // Calcular distancia al Estadio Azteca si tenemos coordenadas
   const distanciaKm = negocio.latitud && negocio.longitud
@@ -163,7 +144,7 @@ export default function BusinessCard({ negocio, onTraducirMenu }: Props) {
         <div className="flex flex-wrap gap-2">
           {negocio.metodos_pago.map((metodo) => (
             <span key={metodo} className="bg-surface text-text-main text-sm px-3 py-1 rounded-full">
-              {METODOS_PAGO_LABELS[metodo] || metodo}
+              {t(`metodosPagoMap.${metodo}` as any)}
             </span>
           ))}
         </div>
@@ -177,7 +158,7 @@ export default function BusinessCard({ negocio, onTraducirMenu }: Props) {
         <div className="flex flex-wrap gap-2">
           {negocio.idiomas_atencion.map((idioma) => (
             <span key={idioma} className="bg-surface text-text-main text-sm px-3 py-1 rounded-full">
-              {IDIOMAS_LABELS[idioma] || idioma}
+              {t(`idiomasMap.${idioma}` as any)}
             </span>
           ))}
         </div>
@@ -192,7 +173,7 @@ export default function BusinessCard({ negocio, onTraducirMenu }: Props) {
           <div className="flex flex-wrap gap-2">
             {negocio.accesibilidad.map((item) => (
               <span key={item} className="bg-surface text-text-main text-sm px-3 py-1 rounded-full">
-                {ACCESIBILIDAD_LABELS[item] || item}
+                {t(`accesibilidadMap.${item}` as any)}
               </span>
             ))}
           </div>
