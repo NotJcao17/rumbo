@@ -151,5 +151,26 @@
   "otraFoto": "Weiteres Foto aufnehmen",
   "platillosDetectados": "Gericht erkannt",
   "platillosDetectadosPlural": "Gerichte erkannt"
+},
+  "distanciaEstadio": "vom Estadio Azteca",
+  "businessCard": {
+  "verificado": "Verifiziert",
+  "horario": "Öffnungszeiten",
+  "preciosReferencia": "Referenzpreise",
+  "metodosPago": "Zahlungsmethoden",
+  "idiomasAtencion": "Gesprochene Sprachen",
+  "accesibilidad": "Barrierefreiheit",
+  "traducirMenu": "Menü übersetzen",
+  "comoLlegar": "Wegbeschreibung",
+  "efectivo": "Bargeld",
+  "tarjetaDebito": "Debitkarte",
+  "tarjetaCredito": "Kreditkarte",
+  "transferencia": "Überweisung",
+  "rampa": "Rampe",
+  "banoAccesible": "Barrierefreie Toilette",
+  "menuBraille": "Braille-Menü",
+  "espacioAmplio": "Breite Gänge",
+  "a": "",
+  "distanciaEstadio": "vom Estadio Azteca"
 }
 }
