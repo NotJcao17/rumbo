@@ -41,7 +41,11 @@ export default function Map() {
 
   const categorias = searchParams.get('categorias')
   const num = searchParams.get('num')
-  const modoRuta = !!categorias && !!num
+  const negocioIds = searchParams.get('negocio_ids')
+  const zonaLat = searchParams.get('zona_lat')
+  const zonaLng = searchParams.get('zona_lng')
+  const zonaId = searchParams.get('zona_id')
+  const modoRuta = (!!categorias && !!num) || !!negocioIds
 
   // Guardamos t en un ref para usarlo dentro de funciones async
   // (las funciones async no pueden leer hooks directamente si se llaman fuera del ciclo de React)
@@ -87,8 +91,7 @@ export default function Map() {
             .addTo(map.current!)
         },
         () => {
-          console.log('Geolocalización no disponible, usando ubicación por defecto')
-          userLocation.current = DEFAULT_CENTER
+          console.log('Geolocalización no disponible')
         }
       )
     }
@@ -125,7 +128,7 @@ export default function Map() {
       const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
         <div style="font-family: Inter, sans-serif; padding: 4px;">
           <p style="font-weight: 600; margin: 0 0 4px 0; color: #164E63;">${negocio.nombre}</p>
-          <p style="margin: 0 0 2px 0; font-size: 12px; color: #888888;">${tRef.current('categoria')} ${negocio.categoria_principal}</p>
+          <p style="margin: 0 0 2px 0; font-size: 12px; color: #888888;">${tRef.current('categoria')} ${negocio.categoria_principal.replace(/_/g, ' ')}</p>
           <p style="margin: 0; font-size: 12px; color: #888888;">${tRef.current('rangoPrecios')} $${negocio.rango_precios} MXN</p>
         </div>
       `)
@@ -147,24 +150,61 @@ export default function Map() {
     }
 
     const [lng, lat] = userLocation.current ?? DEFAULT_CENTER
-    const categoriaIds = categorias!.split(',')
-    const numLugares = parseInt(num!)
+    let negociosParaRuta: Negocio[] = []
 
-    const { data, error } = await supabase.rpc('get_negocios_para_ruta', {
-      categoria_ids: categoriaIds,
-      user_lng: lng,
-      user_lat: lat,
-      limite: numLugares,
-    })
+    if (negocioIds) {
+      // Flujo paso a paso — negocios ya seleccionados por el usuario
+      const ids = negocioIds.split(',')
+      const { data, error } = await supabase
+        .from('negocios')
+        .select('id, nombre, direccion, rango_precios')
+        .in('id', ids)
 
-    if (error || !data || data.length === 0) {
-      console.error('Error generando ruta:', error)
-      return
+      if (error || !data || data.length === 0) {
+        console.error('Error cargando negocios seleccionados:', error)
+        return
+      }
+
+      // Obtener coordenadas con la función existente
+      const { data: coordData, error: coordError } = await supabase
+        .rpc('get_negocios_con_coordenadas')
+
+      if (coordError || !coordData) return
+
+      // Filtrar solo los negocios seleccionados manteniendo el orden
+      negociosParaRuta = ids.map(id => {
+        const negocio = coordData.find((n: Negocio) => n.id === id)
+        return negocio
+      }).filter(Boolean)
+
+    } else {
+      // Flujo automático — selección por categorías
+      const usarLng = zonaId !== 'gps' && zonaLng ? parseFloat(zonaLng) : lng
+      const usarLat = zonaId !== 'gps' && zonaLat ? parseFloat(zonaLat) : lat
+      const categoriaIds = categorias!.split(',')
+      const numLugares = parseInt(num!)
+
+      const { data, error } = await supabase.rpc('get_negocios_para_ruta', {
+        categoria_ids: categoriaIds,
+        user_lng: usarLng,
+        user_lat: usarLat,
+        limite: numLugares,
+      })
+
+      if (error || !data || data.length === 0) {
+        console.error('Error generando ruta:', error)
+        return
+      }
+
+      negociosParaRuta = data
     }
 
-    setParadas(data)
+    if (negociosParaRuta.length === 0) return
 
-    data.forEach((negocio: Negocio, index: number) => {
+    setParadas(negociosParaRuta)
+
+    // Dibujar marcadores cian numerados
+    negociosParaRuta.forEach((negocio: Negocio, index: number) => {
       const el = document.createElement('div')
       el.style.width = '28px'
       el.style.height = '28px'
@@ -184,8 +224,8 @@ export default function Map() {
       const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
         <div style="font-family: Inter, sans-serif; padding: 4px;">
           <p style="font-weight: 600; margin: 0 0 4px 0; color: #164E63;">${index + 1}. ${negocio.nombre}</p>
-          <p style="margin: 0 0 2px 0; font-size: 12px; color: #888888;">${tRef.current('categoria')} ${negocio.categoria_principal}</p>
-          <p style="margin: 0; font-size: 12px; color: #888888;">${tRef.current('rangoPrecios')} $${negocio.rango_precios} MXN</p>
+          <p style="margin: 0 0 2px 0; font-size: 12px; color: #888888;">Categoría: ${negocio.categoria_principal.replace(/_/g, ' ')}</p>
+          <p style="margin: 0; font-size: 12px; color: #888888;">Rango de precios: $${negocio.rango_precios} MXN</p>
         </div>
       `)
 
@@ -197,19 +237,22 @@ export default function Map() {
       routeMarkers.current.push(marker)
     })
 
-    await trazarRuta(data)
+    await trazarRuta(negociosParaRuta)
 
+    // Ajustar vista
     const bounds = new mapboxgl.LngLatBounds()
-    data.forEach((negocio: Negocio) => {
+    negociosParaRuta.forEach((negocio: Negocio) => {
       bounds.extend([negocio.longitud, negocio.latitud])
     })
+
     map.current?.fitBounds(bounds, { padding: 80 })
 
+    // Log
     await supabase.from('logs_eventos').insert({
       tipo: 'ruta_generada',
       metadata: {
-        categorias: categoriaIds,
-        num_paradas: data.length,
+        categorias: categorias?.split(',') ?? [],
+        num_paradas: negociosParaRuta.length,
       }
     })
   }
@@ -265,7 +308,8 @@ export default function Map() {
     if (map.current?.getLayer('ruta')) map.current.removeLayer('ruta')
     if (map.current?.getSource('ruta')) map.current.removeSource('ruta')
 
-    router.push(`/${locale}`)
+    cargarNegocios()
+    router.replace(`/${locale}`)
   }
 
   function abrirEnGoogleMaps() {
@@ -349,7 +393,7 @@ export default function Map() {
                     {parada.nombre}
                   </p>
                   <p style={{ margin: 0, fontSize: '11px', color: '#888888' }}>
-                    {parada.categoria_principal} · {Math.round(parada.distancia)} {t('desdeUbicacion')}
+                    {parada.categoria_principal.replace(/_/g, ' ')}{parada.distancia != null ? ` · ${Math.round(parada.distancia)} ${t('desdeUbicacion')}` : ''}
                   </p>
                 </div>
               </div>
@@ -390,7 +434,7 @@ export default function Map() {
           {modoRuta ? t('cambiarRuta') : t('generarRuta')}
         </button>
 
-        {modoRuta && (
+        {paradas.length > 0 && (
           <button
             onClick={limpiarRuta}
             style={{
@@ -411,7 +455,7 @@ export default function Map() {
           </button>
         )}
 
-        {modoRuta && (
+        {paradas.length > 0 && (
           <button
             onClick={abrirEnGoogleMaps}
             style={{
