@@ -151,5 +151,27 @@
   "otraFoto": "Tomar otra foto",
   "platillosDetectados": "platillo detectado",
   "platillosDetectadosPlural": "platillos detectados"
+},
+  "distanciaEstadio": "del Estadio Azteca",
+  
+  "businessCard": {
+  "verificado": "Verificado",
+  "horario": "Horario",
+  "preciosReferencia": "Precios de referencia",
+  "metodosPago": "Métodos de pago",
+  "idiomasAtencion": "Idiomas de atención",
+  "accesibilidad": "Accesibilidad",
+  "traducirMenu": "Traducir menú",
+  "comoLlegar": "Cómo llegar",
+  "efectivo": "Efectivo",
+  "tarjetaDebito": "Débito",
+  "tarjetaCredito": "Crédito",
+  "transferencia": "Transferencia",
+  "rampa": "Rampa",
+  "banoAccesible": "Baño accesible",
+  "menuBraille": "Menú braille",
+  "espacioAmplio": "Espacio amplio",
+  "a": "A",
+  "distanciaEstadio": "del Estadio Azteca"
 }
 }

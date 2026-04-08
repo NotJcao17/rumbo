@@ -151,5 +151,26 @@
   "otraFoto": "Take another photo",
   "platillosDetectados": "dish detected",
   "platillosDetectadosPlural": "dishes detected"
+},
+  "distanciaEstadio": "from Estadio Azteca",
+  "businessCard": {
+  "verificado": "Verified",
+  "horario": "Hours",
+  "preciosReferencia": "Reference prices",
+  "metodosPago": "Payment methods",
+  "idiomasAtencion": "Languages spoken",
+  "accesibilidad": "Accessibility",
+  "traducirMenu": "Translate menu",
+  "comoLlegar": "Get directions",
+  "efectivo": "Cash",
+  "tarjetaDebito": "Debit",
+  "tarjetaCredito": "Credit",
+  "transferencia": "Transfer",
+  "rampa": "Ramp",
+  "banoAccesible": "Accessible restroom",
+  "menuBraille": "Braille menu",
+  "espacioAmplio": "Wide aisles",
+  "a": "",
+  "distanciaEstadio": "from Estadio Azteca"
 }
 }
