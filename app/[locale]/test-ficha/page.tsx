@@ -12,14 +12,14 @@ const NEGOCIO_FALSO = {
   horario: 'Lun-Dom 8:00-23:00',
   es_gastronomico: true,
   estado: 'aprobado',
+  latitud: 19.4167,
+  longitud: -99.1617,
 }
 
 export default function TestFicha() {
   return (
     <main className="min-h-screen bg-bg-page flex items-center justify-center p-4">
-      <BusinessCard
-        negocio={NEGOCIO_FALSO}
-      />
+      <BusinessCard negocio={NEGOCIO_FALSO} />
     </main>
   )
 }
