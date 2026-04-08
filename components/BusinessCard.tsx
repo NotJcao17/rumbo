@@ -120,7 +120,7 @@ export default function BusinessCard({ negocio, onTraducirMenu }: Props) {
       {distanciaKm !== null && (
         <div className="flex items-center gap-1">
           <span className="bg-surface text-text-main text-sm px-3 py-1 rounded-full">
-            🏟️ {distanciaKm >= 1
+            ⚽ {distanciaKm >= 1
               ? `${t('a')} ${distanciaKm.toFixed(1)} km ${t('distanciaEstadio')}`
               : `${t('a')} ${Math.round(distanciaKm * 1000)} m ${t('distanciaEstadio')}`
             }
