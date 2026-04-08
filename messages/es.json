@@ -173,5 +173,20 @@
   "espacioAmplio": "Espacio amplio",
   "a": "A",
   "distanciaEstadio": "del Estadio Azteca"
+},
+"categories": {
+  "desayuno": "Desayuno",
+  "comida": "Comida",
+  "cena": "Cena",
+  "cafe": "Café",
+  "bar": "Bar",
+  "museo": "Museo",
+  "galeria": "Galería",
+  "sitio_historico": "Sitio histórico",
+  "tienda": "Tienda",
+  "mercado": "Mercado",
+  "parque": "Parque",
+  "otros": "Otros",
+  "otro": "Otro"
 }
 }

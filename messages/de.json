@@ -172,5 +172,20 @@
   "espacioAmplio": "Breite Gänge",
   "a": "",
   "distanciaEstadio": "vom Estadio Azteca"
+},
+"categories": {
+  "desayuno": "Frühstück",
+  "comida": "Mittagessen",
+  "cena": "Abendessen",
+  "cafe": "Kaffee",
+  "bar": "Bar",
+  "museo": "Museum",
+  "galeria": "Galerie",
+  "sitio_historico": "Historische Stätte",
+  "tienda": "Geschäft",
+  "mercado": "Markt",
+  "parque": "Park",
+  "otros": "Andere",
+  "otro": "Andere"
 }
 }

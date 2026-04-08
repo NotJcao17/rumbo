@@ -172,5 +172,20 @@
   "espacioAmplio": "Wide aisles",
   "a": "",
   "distanciaEstadio": "from Estadio Azteca"
+},
+"categories": {
+  "desayuno": "Breakfast",
+  "comida": "Lunch",
+  "cena": "Dinner",
+  "cafe": "Coffee",
+  "bar": "Bar",
+  "museo": "Museum",
+  "galeria": "Gallery",
+  "sitio_historico": "Historic site",
+  "tienda": "Shop",
+  "mercado": "Market",
+  "parque": "Park",
+  "otros": "Other",
+  "otro": "Other"
 }
 }
