@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { supabase } from '@/lib/supabase-client'
 
 interface OpcionNegocio {
@@ -28,6 +28,7 @@ export default function RouteSelect() {
   const router = useRouter()
   const locale = useLocale()
   const searchParams = useSearchParams()
+  const tCats = useTranslations('categories')
 
   const [pasos, setPasos] = useState<PasoCategoria[]>([])
   const [pasoActual, setPasoActual] = useState(0)
@@ -187,7 +188,7 @@ export default function RouteSelect() {
           Paso {pasoActual + 1} de {pasos.length}
         </p>
         <h1 style={{ color: '#164E63', fontSize: '20px', fontWeight: 600, margin: 0 }}>
-          ¿Dónde prefieres {paso.categoria_nombre}?
+          ¿Dónde prefieres {tCats(paso.categoria_nombre as any)}?
         </h1>
       </div>
 

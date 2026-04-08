@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import { supabase } from '@/lib/supabase-client'
 
+
 const ZONAS = [
   { id: 'gps', nombre: 'Mi ubicación actual', lat: null, lng: null },
   { id: 'condesa_roma', nombre: 'Condesa / Roma', lat: 19.4130, lng: -99.1735 },
@@ -23,6 +24,7 @@ export default function RouteConfig() {
   const router = useRouter()
   const locale = useLocale()
   const t = useTranslations('routeConfig')
+  const tCats = useTranslations('categories')
 
   const [categorias, setCategorias] = useState<Categoria[]>([])
   const [seleccionadas, setSeleccionadas] = useState<string[]>([])
@@ -236,7 +238,7 @@ export default function RouteConfig() {
                           : 1,
                       }}
                     >
-                      {cat.nombre}
+                      {tCats(cat.nombre as any)}
                     </button>
                   )
                 })}

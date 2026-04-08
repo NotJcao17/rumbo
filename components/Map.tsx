@@ -38,6 +38,7 @@ export default function Map() {
   const userLocation = useRef<[number, number] | null>(null)
   const [tiempoTotal, setTiempoTotal] = useState<number | null>(null)
   const [paradas, setParadas] = useState<Negocio[]>([])
+  const [offline, setOffline] = useState(false)
 
   const categorias = searchParams.get('categorias')
   const num = searchParams.get('num')
@@ -46,6 +47,18 @@ export default function Map() {
   const zonaLng = searchParams.get('zona_lng')
   const zonaId = searchParams.get('zona_id')
   const modoRuta = (!!categorias && !!num) || !!negocioIds
+
+  useEffect(() => {
+    setOffline(!navigator.onLine)
+    const goOffline = () => setOffline(true)
+    const goOnline  = () => setOffline(false)
+    window.addEventListener('offline', goOffline)
+    window.addEventListener('online',  goOnline)
+    return () => {
+      window.removeEventListener('offline', goOffline)
+      window.removeEventListener('online',  goOnline)
+    }
+  }, [])
 
   // Guardamos t en un ref para usarlo dentro de funciones async
   // (las funciones async no pueden leer hooks directamente si se llaman fuera del ciclo de React)
@@ -159,7 +172,8 @@ export default function Map() {
         <div style="font-family: Inter, sans-serif; padding: 4px; min-width: 160px;">
           <p style="font-weight: 600; margin: 0 0 4px 0; color: #164E63;">${negocio.nombre}</p>
           <p style="margin: 0 0 2px 0; font-size: 12px; color: #888888;">${tRef.current('categoria')} ${tCatsRef.current(negocio.categoria_principal as any)}</p>
-          <p style="margin: 0; font-size: 12px; color: #888888;">${tRef.current('rangoPrecios')} $${negocio.rango_precios} MXN</p>
+          <p style="margin: 0 0 8px 0; font-size: 12px; color: #888888;">${tRef.current('rangoPrecios')} $${negocio.rango_precios} MXN${precioConvertido(negocio.rango_precios)}</p>
+          <button onclick="window.rumboVerFicha('${negocio.id}')" style="width:100%;padding:6px 0;background:#0891B2;color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;">Ver ficha →</button>
         </div>
       `)
 
@@ -359,6 +373,16 @@ export default function Map() {
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100vh' }}>
+      {offline && (
+        <div style={{
+          position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10,
+          backgroundColor: '#1F2937', color: 'white',
+          padding: '12px 16px', textAlign: 'center',
+          fontFamily: 'Inter, sans-serif', fontSize: '14px',
+        }}>
+          📡 Sin conexión a internet. Revisa tu red e intenta de nuevo.
+        </div>
+      )}
       <div
         ref={mapContainer}
         style={{ width: '100%', height: '100vh' }}
@@ -423,7 +447,7 @@ export default function Map() {
                     {parada.nombre}
                   </p>
                   <p style={{ margin: 0, fontSize: '11px', color: '#888888' }}>
-                    {tCats(parada.categoria_principal as any)} · {Math.round(parada.distancia)} {t('desdeUbicacion')}
+                    {tCats(parada.categoria_principal as any)}{parada.distancia != null ? ` · ${Math.round(parada.distancia)} ${t('desdeUbicacion')}` : ''}
                   </p>
                 </div>
               </div>
