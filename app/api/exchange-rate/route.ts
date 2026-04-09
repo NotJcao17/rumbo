@@ -21,27 +21,30 @@ export async function GET(request: NextRequest){
 
     //Si no hay caché o expiró, consultamos AwesomeAPI
     try{
-        const response = await fetch(
-            `https://economia.awesomeapi.com.br/json/last/MXN-${currency}`
-        )
-        const data = await response.json()
+    const response = await fetch(
+        `https://economia.awesomeapi.com.br/json/last/MXN-${currency}`
+    )
+    const data = await response.json()
+    console.log('Respuesta de AwesomeAPI:', JSON.stringify(data))
 
-        //Awesome API devuelve un objeto con clave dinámica tipo "MXNEUR"
-        const key = `MXN${currency}`
-        const rate = parseFloat(data[key].bid)
+    const key = `MXN${currency}`
+    console.log('Key buscada:', key)
+    console.log('Valor encontrado:', data[key])
 
-        //Guardamos en caché
-        cache[currency] = {rate, timestamp: ahora}
+    const rate = parseFloat(data[key].bid)
+    console.log('Rate calculado:', rate)
 
-        //Registrar evento en logs_eventos
-        await fetch(`${request.nextUrl.origin}/api/log-evento`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ tipo: 'conversion_divisa', metadata: { divisa: currency } }),
-})
+    cache[currency] = {rate, timestamp: ahora}
 
-        return NextResponse.json({ currency, rate, cached:false })
-    } catch(error){
-        return NextResponse.json({error: 'Error consultando tipo de cambio'}, {status:500}) //500: internal server error
-    }
+    await fetch(`${request.nextUrl.origin}/api/log-evento`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tipo: 'conversion_divisa', metadata: { divisa: currency } }),
+    })
+
+    return NextResponse.json({ currency, rate, cached:false })
+} catch(error){
+    console.error('Error completo:', error)
+    return NextResponse.json({error: 'Error consultando tipo de cambio'}, {status:500})
+}
 }
