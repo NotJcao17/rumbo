@@ -4,6 +4,8 @@ PWA para conectar turistas del Mundial FIFA 2026 con pequeños negocios locales 
 
 Desarrollado para el track **Fundación Coppel — Cancha justa en el mundial para los negocios turísticos locales**.
 
+Demo funcional: rumbo-orpin.vercel.app
+
 ---
 
 ## ¿Qué es Rumbo?
@@ -73,30 +75,7 @@ Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
 > con los paquetes instalados. Es esperado que arranque más lento que un proyecto
 > Next.js estándar.
 
----
-
-## Estructura del proyecto
-
-```
-rumbo/
-├── app/
-│   ├── [locale]/          # Páginas con soporte de idioma (es, en, de)
-│   │   ├── layout.tsx
-│   │   └── page.tsx
-│   ├── api/
-│   │   ├── exchange-rate/ # Tipo de cambio MXN → divisa del turista
-│   │   └── translate-menu/ # OCR + traducción de menús con Gemini
-│   └── globals.css        # Estilos globales + paleta de colores
-├── components/            # Componentes reutilizables
-├── i18n/                  # Configuración de next-intl
-├── lib/                   # Clientes de Supabase y helpers
-├── messages/              # Traducciones (es.json, en.json, de.json)
-└── public/                # Íconos PWA y manifest.json
-```
-
----
-
-## Idiomas soportados
+## Idiomas soportados para el mvp
 
 | Código | Idioma |
 |--------|--------|
@@ -112,21 +91,6 @@ rumbo/
 - **Turista nacional** — descubre negocios auténticos fuera de zonas turísticas
 - **Dueño de negocio** — registra y administra su negocio en la plataforma
 - **Administrador** — revisa y aprueba los negocios antes de publicarlos
-
----
-
-## Notas importantes para el equipo
-
-Antes de trabajar en el proyecto, lee el archivo `contexto-fase0.md` que documenta
-los problemas encontrados durante el setup y sus soluciones. Evitará que repitas
-los mismos errores.
-
-Los puntos más importantes:
-
-- `next.config.js` es `.js`, no `.ts`
-- El archivo de proxy se llama `proxy.ts`, no `middleware.ts`
-- Tailwind v4 no usa `tailwind.config.ts` — la paleta está en `globals.css`
-- Siempre correr con `npm run dev`, nunca agregar `--turbopack`
 
 ---
 
