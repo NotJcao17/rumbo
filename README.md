@@ -4,7 +4,7 @@ PWA para conectar turistas del Mundial FIFA 2026 con pequeños negocios locales 
 
 Desarrollado para el track **Fundación Coppel — Cancha justa en el mundial para los negocios turísticos locales**.
 
-Demo funcional: rumbo-orpin.vercel.app
+[Demo funcional](rumbo-orpin.vercel.app)
 
 ---
 
