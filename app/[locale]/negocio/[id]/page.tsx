@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { supabase } from '@/lib/supabase-client'
 import BusinessCard from '@/components/BusinessCard'
 
@@ -31,6 +31,7 @@ export default function NegocioPage() {
   const params = useParams()
   const router = useRouter()
   const locale = useLocale()
+  const t = useTranslations('negocio')
   const id = params.id as string
 
   const [negocio, setNegocio] = useState<Negocio | null>(null)
@@ -75,7 +76,7 @@ export default function NegocioPage() {
         justifyContent: 'center',
         fontFamily: 'Inter, sans-serif',
       }}>
-        <p style={{ color: '#888888' }}>Cargando...</p>
+        <p style={{ color: '#888888' }}>{t('cargando')}</p>
       </div>
     )
   }
@@ -92,7 +93,7 @@ export default function NegocioPage() {
         fontFamily: 'Inter, sans-serif',
         gap: '16px',
       }}>
-        <p style={{ color: '#888888' }}>Negocio no encontrado.</p>
+        <p style={{ color: '#888888' }}>{t('noEncontrado')}</p>
         <button
           onClick={() => router.push(`/${locale}`)}
           style={{
@@ -103,7 +104,7 @@ export default function NegocioPage() {
             cursor: 'pointer',
           }}
         >
-          ← Volver al mapa
+          {t('volverMapa')}
         </button>
       </div>
     )
@@ -128,7 +129,7 @@ export default function NegocioPage() {
           display: 'block',
         }}
       >
-        ← Atrás
+        {t('atras')}
       </button>
       <BusinessCard negocio={negocio} />
     </div>

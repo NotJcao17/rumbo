@@ -13,7 +13,8 @@
     "generarRuta": "Generar ruta",
     "borrarRuta": "Borrar ruta",
     "desdeUbicacion": "m desde tu ubicación",
-    "googleMaps": "📍 Google Maps"
+    "googleMaps": "📍 Google Maps",
+  "verFicha": "Ver ficha →"
 },
   "routeConfig": {
     "titulo": "Configura tu ruta",
@@ -30,7 +31,13 @@
     "tipoGastronomia": "Gastronomía",
     "tipoCultura": "Cultura",
     "tipoCompras": "Compras",
-    "tipoEntretenimiento": "Entretenimiento"
+    "tipoEntretenimiento": "Entretenimiento",
+    "ubicacionActual": "Mi ubicación actual",
+    "gpsNoDisponible": "(no disponible)",
+    "desdeZona": "¿Desde dónde quieres explorar?",
+    "siguiente": "Siguiente →",
+    "listoProgreso": "✅ Listo — {sel} de {total} categorías elegidas",
+    "faltanCategorias": "Elige exactamente {total} categorías — llevas {sel}"
 },
 "nav": {
   "mapa": "Mapa",
@@ -69,6 +76,9 @@
     "btnGuardando": "Guardando...",
     "msgRegistrado": "Negocio registrado. Será revisado por un administrador.",
     "msgGuardado": "Cambios guardados.",
+    "noEncontrado": "Negocio no encontrado.",
+    "volverMapa": "← Volver al mapa",
+    "atras": "← Atrás",
     "errorNombreDireccion": "Nombre y dirección son obligatorios.",
     "errorCategoria": "Selecciona al menos una categoría.",
     "errorMetodoPago": "Selecciona al menos un método de pago.",
@@ -165,6 +175,7 @@
   "traducirMenu": "Traducir menú",
   "comoLlegar": "Cómo llegar",
   "efectivo": "Efectivo",
+  "tarjeta": "Tarjeta",
   "tarjetaDebito": "Débito",
   "tarjetaCredito": "Crédito",
   "transferencia": "Transferencia",
@@ -191,6 +202,13 @@
     "menu_braille": "👆 Menú braille",
     "espacio_amplio": "↔️ Espacio amplio"
   }
+},
+"routeSelect": {
+  "buscando": "Buscando opciones...",
+  "atras": "← Atrás",
+  "paso": "Paso {n} de {total}",
+  "dondePrefières": "¿Dónde prefieres {categoria}?",
+  "efectivo": "💵 Efectivo"
 },
 "categories": {
   "desayuno": "Desayuno",

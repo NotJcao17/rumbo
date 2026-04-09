@@ -13,7 +13,8 @@
   "generarRuta": "Generate route",
   "borrarRuta": "Clear route",
   "desdeUbicacion": "m from your location",
-  "googleMaps": "📍 Google Maps"
+  "googleMaps": "📍 Google Maps",
+  "verFicha": "View details →"
 },
 "routeConfig": {
   "titulo": "Configure your route",
@@ -30,7 +31,13 @@
   "tipoGastronomia": "Gastronomy",
   "tipoCultura": "Culture",
   "tipoCompras": "Shopping",
-  "tipoEntretenimiento": "Entertainment"
+  "tipoEntretenimiento": "Entertainment",
+  "ubicacionActual": "My current location",
+  "gpsNoDisponible": "(not available)",
+  "desdeZona": "Where do you want to explore from?",
+  "siguiente": "Next →",
+  "listoProgreso": "✅ Ready — {sel} of {total} categories chosen",
+  "faltanCategorias": "Choose exactly {total} categories — {sel} chosen"
 },
 "nav": {
   "mapa": "Map",
@@ -69,6 +76,9 @@
     "btnGuardando": "Saving...",
     "msgRegistrado": "Business registered. It will be reviewed by an administrator.",
     "msgGuardado": "Changes saved.",
+    "noEncontrado": "Business not found.",
+    "volverMapa": "← Back to map",
+    "atras": "← Back",
     "errorNombreDireccion": "Name and address are required.",
     "errorCategoria": "Select at least one category.",
     "errorMetodoPago": "Select at least one payment method.",
@@ -164,6 +174,7 @@
   "traducirMenu": "Translate menu",
   "comoLlegar": "Get directions",
   "efectivo": "Cash",
+  "tarjeta": "Card",
   "tarjetaDebito": "Debit",
   "tarjetaCredito": "Credit",
   "transferencia": "Transfer",
@@ -190,6 +201,13 @@
     "menu_braille": "👆 Braille menu",
     "espacio_amplio": "↔️ Wide aisles"
   }
+},
+"routeSelect": {
+  "buscando": "Searching for options...",
+  "atras": "← Back",
+  "paso": "Step {n} of {total}",
+  "dondePrefières": "Where do you prefer {categoria}?",
+  "efectivo": "💵 Cash"
 },
 "categories": {
   "desayuno": "Breakfast",

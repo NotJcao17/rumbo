@@ -125,9 +125,13 @@ export default function Map() {
   }, [])
 
   async function cargarNegocios() {
-    // Handler global para que el botón "Ver ficha" dentro del popup HTML pueda navegar
+    // Handler global para navegar a la ficha (modo exploración — misma pestaña)
     ;(window as any).rumboVerFicha = (id: string) => {
       router.push(`/${locale}/negocio/${id}`)
+    }
+    // Handler global para abrir ficha en nueva pestaña (modo ruta — la ruta se mantiene)
+    ;(window as any).rumboVerFichaTab = (id: string) => {
+      window.open(`/${locale}/negocio/${id}`, '_blank')
     }
 
     // Obtener tipo de cambio del turista una sola vez
@@ -266,10 +270,11 @@ export default function Map() {
       el.innerText = (index + 1).toString()
 
       const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
-        <div style="font-family: Inter, sans-serif; padding: 4px;">
+        <div style="font-family: Inter, sans-serif; padding: 4px; min-width: 160px;">
           <p style="font-weight: 600; margin: 0 0 4px 0; color: #164E63;">${index + 1}. ${negocio.nombre}</p>
           <p style="margin: 0 0 2px 0; font-size: 12px; color: #888888;">${tRef.current('categoria')} ${tCatsRef.current(negocio.categoria_principal as any)}</p>
-          <p style="margin: 0; font-size: 12px; color: #888888;">${tRef.current('rangoPrecios')} $${negocio.rango_precios} MXN</p>
+          <p style="margin: 0 0 8px 0; font-size: 12px; color: #888888;">${tRef.current('rangoPrecios')} $${negocio.rango_precios} MXN</p>
+          <button onclick="window.rumboVerFichaTab('${negocio.id}')" style="width:100%;padding:6px 0;background:#0891B2;color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;">${tRef.current('verFicha')}</button>
         </div>
       `)
 
@@ -421,7 +426,7 @@ export default function Map() {
             padding: '10px 16px',
           }}>
             {paradas.map((parada, index) => (
-              <div key={parada.id} style={{
+              <div key={`${parada.id}-${index}`} style={{
                 display: 'flex',
                 alignItems: 'flex-start',
                 gap: '10px',

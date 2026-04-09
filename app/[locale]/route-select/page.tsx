@@ -13,6 +13,8 @@ interface OpcionNegocio {
   direccion: string
   rango_precios: string
   metodos_pago: string[]
+  idiomas_atencion?: string[]
+  accesibilidad?: string[]
   longitud: number
   latitud: number
   distancia: number
@@ -29,16 +31,38 @@ export default function RouteSelect() {
   const locale = useLocale()
   const searchParams = useSearchParams()
   const tCats = useTranslations('categories')
+  const tSelect = useTranslations('routeSelect')
+  const tCard = useTranslations('businessCard')
 
   const [pasos, setPasos] = useState<PasoCategoria[]>([])
   const [pasoActual, setPasoActual] = useState(0)
   const [seleccionados, setSeleccionados] = useState<OpcionNegocio[]>([])
   const [cargando, setCargando] = useState(true)
+  const [gpsUsado, setGpsUsado] = useState(false)
 
   const categorias = searchParams.get('categorias')
   const zonaLat = searchParams.get('zona_lat')
   const zonaLng = searchParams.get('zona_lng')
   const zonaId = searchParams.get('zona_id')
+
+  const METODOS_PAGO_LABELS: Record<string, string> = {
+    efectivo: `💵 ${tCard('efectivo')}`,
+    tarjeta: `💳 ${tCard('tarjeta')}`,
+    transferencia: `📲 ${tCard('transferencia')}`,
+  }
+
+  const IDIOMAS_LABELS: Record<string, string> = {
+    es: '🇲🇽 Español',
+    en: '🇺🇸 English',
+    de: '🇩🇪 Deutsch',
+  }
+
+  function normalizarMetodos(metodos: string[]): string[] {
+    const set = new Set(metodos.map(m =>
+      (m === 'tarjeta_debito' || m === 'tarjeta_credito') ? 'tarjeta' : m
+    ))
+    return Array.from(set)
+  }
 
   useEffect(() => {
     async function cargarOpciones() {
@@ -46,7 +70,6 @@ export default function RouteSelect() {
 
       const categoriaIds = categorias.split(',')
 
-      // Usar coordenadas de zona o esperar GPS
       let lng = zonaLng ? parseFloat(zonaLng) : -99.1735
       let lat = zonaLat ? parseFloat(zonaLat) : 19.4130
 
@@ -56,6 +79,7 @@ export default function RouteSelect() {
             (pos) => {
               lng = pos.coords.longitude
               lat = pos.coords.latitude
+              setGpsUsado(true)
               resolve()
             },
             () => resolve()
@@ -87,7 +111,6 @@ export default function RouteSelect() {
         agrupado[item.categoria_id].opciones.push(item)
       })
 
-      // Mantener el orden de categorías seleccionadas
       const pasosOrdenados = categoriaIds
         .map(id => agrupado[id])
         .filter(Boolean)
@@ -106,7 +129,6 @@ export default function RouteSelect() {
     if (pasoActual < pasos.length - 1) {
       setPasoActual(pasoActual + 1)
     } else {
-      // Todos los pasos completados — ir al mapa con los negocios seleccionados
       const ids = nuevosSeleccionados.map(n => n.negocio_id).join(',')
       const params = new URLSearchParams({
         negocio_ids: ids,
@@ -137,12 +159,14 @@ export default function RouteSelect() {
         justifyContent: 'center',
         fontFamily: 'Inter, sans-serif',
       }}>
-        <p style={{ color: '#888888' }}>Buscando opciones...</p>
+        <p style={{ color: '#888888' }}>{tSelect('buscando')}</p>
       </div>
     )
   }
 
   const paso = pasos[pasoActual]
+  const idsSeleccionados = new Set(seleccionados.map(s => s.negocio_id))
+  const opcionesDisponibles = paso.opciones.filter(o => !idsSeleccionados.has(o.negocio_id))
 
   return (
     <div style={{
@@ -166,7 +190,7 @@ export default function RouteSelect() {
             marginBottom: '16px',
           }}
         >
-          ← Atrás
+          {tSelect('atras')}
         </button>
 
         {/* Indicador de progreso */}
@@ -185,16 +209,16 @@ export default function RouteSelect() {
         </div>
 
         <p style={{ color: '#888888', fontSize: '13px', margin: '0 0 4px 0' }}>
-          Paso {pasoActual + 1} de {pasos.length}
+          {tSelect('paso', { n: pasoActual + 1, total: pasos.length })}
         </p>
         <h1 style={{ color: '#164E63', fontSize: '20px', fontWeight: 600, margin: 0 }}>
-          ¿Dónde prefieres {tCats(paso.categoria_nombre as any)}?
+          {tSelect('dondePrefières', { categoria: tCats(paso.categoria_nombre as any) })}
         </h1>
       </div>
 
       {/* Tarjetas de opciones */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-        {paso.opciones.map((opcion) => (
+        {opcionesDisponibles.map((opcion) => (
           <button
             key={opcion.negocio_id}
             onClick={() => seleccionarNegocio(opcion)}
@@ -211,10 +235,11 @@ export default function RouteSelect() {
             <p style={{ color: '#164E63', fontWeight: 600, margin: '0 0 4px 0', fontSize: '15px' }}>
               {opcion.nombre}
             </p>
-            <p style={{ color: '#888888', fontSize: '13px', margin: '0 0 8px 0' }}>
+            <p style={{ color: '#888888', fontSize: '13px', margin: '0 0 10px 0' }}>
               {opcion.direccion}
             </p>
-            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+              {/* Precio */}
               <span style={{
                 backgroundColor: '#CFFAFE',
                 color: '#164E63',
@@ -224,7 +249,9 @@ export default function RouteSelect() {
               }}>
                 ${opcion.rango_precios} MXN
               </span>
-              {opcion.distancia > 0 && (
+
+              {/* Distancia — solo si GPS fue exitoso */}
+              {gpsUsado && opcion.distancia > 0 && (
                 <span style={{
                   backgroundColor: '#CFFAFE',
                   color: '#164E63',
@@ -235,17 +262,32 @@ export default function RouteSelect() {
                   {Math.round(opcion.distancia)} m
                 </span>
               )}
-              {opcion.metodos_pago.includes('efectivo') && (
-                <span style={{
-                  backgroundColor: '#CFFAFE',
-                  color: '#164E63',
+
+              {/* Idiomas de atención */}
+              {opcion.idiomas_atencion?.map(idioma => (
+                <span key={idioma} style={{
+                  backgroundColor: '#F5F3FF',
+                  color: '#6D28D9',
                   fontSize: '12px',
                   padding: '3px 10px',
                   borderRadius: '999px',
                 }}>
-                  💵 Efectivo
+                  {IDIOMAS_LABELS[idioma] ?? idioma}
                 </span>
-              )}
+              ))}
+
+              {/* Métodos de pago (débito y crédito unificados como "tarjeta") */}
+              {normalizarMetodos(opcion.metodos_pago).map(metodo => (
+                <span key={metodo} style={{
+                  backgroundColor: '#FFF7ED',
+                  color: '#EA580C',
+                  fontSize: '12px',
+                  padding: '3px 10px',
+                  borderRadius: '999px',
+                }}>
+                  {METODOS_PAGO_LABELS[metodo] ?? metodo}
+                </span>
+              ))}
             </div>
           </button>
         ))}

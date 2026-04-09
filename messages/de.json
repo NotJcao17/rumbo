@@ -13,7 +13,8 @@
     "generarRuta": "Route erstellen",
     "borrarRuta": "Route löschen",
     "desdeUbicacion": "m von deinem Standort",
-    "googleMaps": "📍 Google Maps"
+    "googleMaps": "📍 Google Maps",
+  "verFicha": "Details ansehen →"
   },
   "routeConfig": {
     "titulo": "Route konfigurieren",
@@ -30,7 +31,13 @@
     "tipoGastronomia": "Gastronomie",
     "tipoCultura": "Kultur",
     "tipoCompras": "Einkaufen",
-    "tipoEntretenimiento": "Unterhaltung"
+    "tipoEntretenimiento": "Unterhaltung",
+    "ubicacionActual": "Mein aktueller Standort",
+    "gpsNoDisponible": "(nicht verfügbar)",
+    "desdeZona": "Von wo aus möchtest du erkunden?",
+    "siguiente": "Weiter →",
+    "listoProgreso": "✅ Fertig — {sel} von {total} Kategorien ausgewählt",
+    "faltanCategorias": "Wähle genau {total} Kategorien — {sel} ausgewählt"
   },
   "nav": {
     "mapa": "Karte",
@@ -69,6 +76,9 @@
     "btnGuardando": "Speichern...",
     "msgRegistrado": "Geschäft registriert. Es wird von einem Administrator überprüft.",
     "msgGuardado": "Änderungen gespeichert.",
+    "noEncontrado": "Geschäft nicht gefunden.",
+    "volverMapa": "← Zurück zur Karte",
+    "atras": "← Zurück",
     "errorNombreDireccion": "Name und Adresse sind erforderlich.",
     "errorCategoria": "Wählen Sie mindestens eine Kategorie.",
     "errorMetodoPago": "Wählen Sie mindestens eine Zahlungsmethode.",
@@ -164,6 +174,7 @@
     "traducirMenu": "Menü übersetzen",
     "comoLlegar": "Wegbeschreibung",
     "efectivo": "Bargeld",
+    "tarjeta": "Karte",
     "tarjetaDebito": "Debitkarte",
     "tarjetaCredito": "Kreditkarte",
     "transferencia": "Überweisung",
@@ -190,6 +201,13 @@
       "menu_braille": "👆 Braille-Menü",
       "espacio_amplio": "↔️ Breite Gänge"
     }
+  },
+  "routeSelect": {
+    "buscando": "Optionen werden gesucht...",
+    "atras": "← Zurück",
+    "paso": "Schritt {n} von {total}",
+    "dondePrefières": "Wo bevorzugst du {categoria}?",
+    "efectivo": "💵 Bargeld"
   },
   "categories": {
     "desayuno": "Frühstück",

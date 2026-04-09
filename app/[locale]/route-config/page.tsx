@@ -7,7 +7,7 @@ import { supabase } from '@/lib/supabase-client'
 
 
 const ZONAS = [
-  { id: 'gps', nombre: 'Mi ubicación actual', lat: null, lng: null },
+  { id: 'gps', lat: null, lng: null },
   { id: 'condesa_roma', nombre: 'Condesa / Roma', lat: 19.4130, lng: -99.1735 },
   { id: 'centro', nombre: 'Centro Histórico', lat: 19.4326, lng: -99.1332 },
   { id: 'coyoacan', nombre: 'Coyoacán', lat: 19.3500, lng: -99.1627 },
@@ -162,7 +162,7 @@ export default function RouteConfig() {
         border: '1px solid #E5E5E5',
       }}>
         <p style={{ color: '#164E63', fontWeight: 500, marginBottom: '12px' }}>
-          ¿Desde dónde quieres explorar?
+          {t('desdeZona')}
         </p>
         <select
           value={zonaSeleccionada.id}
@@ -187,7 +187,9 @@ export default function RouteConfig() {
         >
           {ZONAS.map(zona => (
             <option key={zona.id} value={zona.id} disabled={zona.id === 'gps' && !gpsDisponible}>
-              {zona.id === 'gps' ? '📍 ' : '🗺️ '}{zona.nombre}{zona.id === 'gps' && !gpsDisponible ? ' (no disponible)' : ''}
+              {zona.id === 'gps'
+                ? `📍 ${t('ubicacionActual')}${!gpsDisponible ? ` ${t('gpsNoDisponible')}` : ''}`
+                : `🗺️ ${'nombre' in zona ? zona.nombre : ''}`}
             </option>
           ))}
         </select>
@@ -263,8 +265,8 @@ export default function RouteConfig() {
           textAlign: 'center',
         }}>
           {seleccionadas.length === numLugares
-            ? `✅ Listo — ${seleccionadas.length} de ${numLugares} categorías elegidas`
-            : `Elige exactamente ${numLugares} categorías — llevas ${seleccionadas.length}`
+            ? t('listoProgreso', { sel: seleccionadas.length, total: numLugares })
+            : t('faltanCategorias', { sel: seleccionadas.length, total: numLugares })
           }
         </p>
       </div>
@@ -285,7 +287,7 @@ export default function RouteConfig() {
           cursor: seleccionadas.length !== numLugares ? 'not-allowed' : 'pointer',
         }}
       >
-        Siguiente →
+        {t('siguiente')}
       </button>
     </div>
   )
