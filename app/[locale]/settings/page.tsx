@@ -1,14 +1,16 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
+import Link from 'next/link'
 import { IDIOMAS, MONEDAS } from '@/lib/opciones'
 
 export default function Settings() {
   const [idiomaSeleccionado, setIdiomaSeleccionado] = useState('en')
   const [monedaSeleccionada, setMonedaSeleccionada] = useState('USD')
   const router = useRouter()
+  const { locale } = useParams<{ locale: string }>()
   const t = useTranslations('settings')
 
   useEffect(() => {
@@ -79,6 +81,16 @@ export default function Settings() {
         >
           {t('guardar')}
         </button>
+
+        <div className="border-t border-border-color pt-4">
+          <Link
+            href={`/${locale}/negocio/login`}
+            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-border-color text-sm font-medium text-text-secondary hover:text-text-main hover:border-primary transition-colors"
+          >
+            <span>🏪</span>
+            {t('accesoNegocios')}
+          </Link>
+        </div>
 
       </div>
     </main>

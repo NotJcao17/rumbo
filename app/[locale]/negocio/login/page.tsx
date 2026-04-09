@@ -54,12 +54,17 @@ export default function LoginNegocioPage() {
         return;
       }
 
-      // 2. Consultar el rol del usuario (puede no tener perfil si fue creado antes del registro)
-      const { data: usuario } = await supabase
+      // 2. Consultar el rol del usuario
+      const { data: usuario, error: profileError } = await supabase
         .from('usuarios_negocio')
         .select('rol')
         .eq('id', userId)
         .maybeSingle();
+
+      if (profileError) {
+        setError('Error al obtener el perfil. Intenta de nuevo.');
+        return;
+      }
 
       // Si no tiene perfil aún, crear uno con rol 'dueno'
       if (!usuario) {

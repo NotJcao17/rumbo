@@ -147,7 +147,8 @@
   "subtitulo": "Change your language and currency",
   "idioma": "Language",
   "moneda": "Currency",
-  "guardar": "Save"
+  "guardar": "Save",
+  "accesoNegocios": "Business access"
   },
   "scanner": {
   "titulo": "Menu Scanner",
