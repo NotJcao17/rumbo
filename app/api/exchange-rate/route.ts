@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse  } from 'next/server'
-import { supabase } from '@/lib/supabase-client';
-import { MetadataBoundary } from 'next/dist/lib/framework/boundary-components';
 
 //caché en memoria del servidor - se reinicia solo cuando el servidor se reinicia
 //así evitamos llamar a AwesomeAPI en cada petición
@@ -36,7 +34,7 @@ export async function GET(request: NextRequest){
         cache[currency] = {rate, timestamp: ahora}
 
         //Registrar evento en logs_eventos
-        await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL ? '' : 'http://localhost:3000'}/api/log-evento`, {
+        await fetch(`${request.nextUrl.origin}/api/log-evento`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ tipo: 'conversion_divisa', metadata: { divisa: currency } }),
