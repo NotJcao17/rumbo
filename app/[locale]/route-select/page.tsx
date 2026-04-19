@@ -150,8 +150,12 @@ export default function RouteSelect() {
 
   if (cargando) {
     return (
-      <div className="min-h-screen bg-bg-page flex items-center justify-center">
-        <p className="text-text-secondary">{tSelect('buscando')}</p>
+      <div className="min-h-screen bg-bg-page flex flex-col items-center justify-center gap-4">
+        <div
+          className="w-12 h-12 rounded-full border-4 border-surface animate-spin-slow"
+          style={{ borderTopColor: '#0891B2' }}
+        />
+        <p className="text-text-secondary font-medium animate-fade-in">{tSelect('buscando')}</p>
       </div>
     )
   }
@@ -164,10 +168,10 @@ export default function RouteSelect() {
     <div className="min-h-screen bg-bg-page pb-24 px-4 pt-6">
 
       {/* Encabezado */}
-      <div className="mb-6">
+      <div className="mb-6 animate-slide-up">
         <button
           onClick={volverAtras}
-          className="text-primary text-sm font-medium cursor-pointer mb-4 flex items-center gap-1 hover:opacity-80 transition-opacity"
+          className="text-primary text-sm font-semibold cursor-pointer mb-5 flex items-center gap-1.5 hover:opacity-70 transition-opacity"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
             <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" fill="currentColor"/>
@@ -175,69 +179,86 @@ export default function RouteSelect() {
           {tSelect('atras')}
         </button>
 
-        {/* Barra de progreso por pasos */}
-        <div className="flex gap-1.5 mb-4">
-          {pasos.map((_, i) => (
-            <div
-              key={i}
-              className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${
+        {/* Journey dots — visualización de progreso */}
+        <div className="flex items-center gap-2 mb-5">
+          {pasos.map((p, i) => (
+            <div key={i} className="flex items-center gap-2">
+              <div className={`transition-all duration-400 flex items-center justify-center font-bold text-xs rounded-full ${
                 i < pasoActual
-                  ? 'bg-primary'
+                  ? 'w-7 h-7 bg-primary text-white shadow-[0_2px_8px_rgba(8,145,178,0.4)]'
                   : i === pasoActual
-                  ? 'bg-primary/50'
-                  : 'bg-border-color'
-              }`}
-            />
+                  ? 'w-8 h-8 bg-primary text-white shadow-[0_4px_12px_rgba(8,145,178,0.45)] ring-4 ring-primary/20'
+                  : 'w-6 h-6 bg-border-color text-text-secondary'
+              }`}>
+                {i < pasoActual ? '✓' : i + 1}
+              </div>
+              {i < pasos.length - 1 && (
+                <div className={`h-0.5 flex-1 w-6 rounded-full transition-all duration-300 ${
+                  i < pasoActual ? 'bg-primary' : 'bg-border-color'
+                }`} />
+              )}
+            </div>
           ))}
         </div>
 
-        <p className="text-text-secondary text-xs mb-1">
+        <p className="text-xs font-bold text-text-secondary uppercase tracking-widest mb-1">
           {tSelect('paso', { n: pasoActual + 1, total: pasos.length })}
         </p>
-        <h1 className="font-display text-xl font-bold text-text-main">
+        <h1 className="font-display text-2xl font-bold text-gradient-primary leading-tight">
           {tSelect('dondePrefières', { categoria: tCats(paso.categoria_nombre as any) })}
         </h1>
       </div>
 
-      {/* Tarjetas de opciones */}
+      {/* Tarjetas de opciones con entrada escalonada */}
       <div className="flex flex-col gap-3">
-        {opcionesDisponibles.map((opcion) => (
+        {opcionesDisponibles.map((opcion, i) => (
           <button
             key={opcion.negocio_id}
             onClick={() => seleccionarNegocio(opcion)}
-            className="card card-hover p-4 text-left w-full"
+            className="card-elevated card-hover p-5 text-left w-full animate-slide-up"
+            style={{ animationDelay: `${i * 70}ms` }}
           >
-            <p className="font-display text-text-main font-semibold mb-1 text-[15px]">
+            {/* Barra de gradiente superior */}
+            <div
+              className="h-1 w-16 rounded-full mb-3 animate-gradient-x"
+              style={{ background: 'linear-gradient(90deg, #0891B2, #EA580C)', backgroundSize: '200% 100%' }}
+            />
+            <p className="font-display text-text-main font-bold mb-0.5 text-base">
               {opcion.nombre}
             </p>
             <p className="text-text-secondary text-sm mb-3">{opcion.direccion}</p>
             <div className="flex gap-1.5 flex-wrap">
 
               {/* Precio */}
-              <span className="bg-surface text-text-main text-xs px-2.5 py-1 rounded-full">
-                ${opcion.rango_precios} MXN
+              <span className="bg-surface text-text-main text-xs px-3 py-1 rounded-full font-medium">
+                💰 ${opcion.rango_precios} MXN
               </span>
 
               {/* Distancia */}
               {gpsUsado && opcion.distancia > 0 && (
-                <span className="bg-surface text-text-main text-xs px-2.5 py-1 rounded-full">
-                  {Math.round(opcion.distancia)} m
+                <span className="bg-surface text-text-main text-xs px-3 py-1 rounded-full font-medium">
+                  📍 {Math.round(opcion.distancia)} m
                 </span>
               )}
 
               {/* Idiomas */}
               {opcion.idiomas_atencion?.map(idioma => (
-                <span key={idioma} className="bg-purple-50 text-purple-700 text-xs px-2.5 py-1 rounded-full">
-                  {IDIOMAS_LABELS[idioma] ?? idioma}
+                <span key={idioma} className="bg-purple-50 text-purple-700 text-xs px-3 py-1 rounded-full font-medium">
+                  🌐 {IDIOMAS_LABELS[idioma] ?? idioma}
                 </span>
               ))}
 
               {/* Métodos de pago */}
               {normalizarMetodos(opcion.metodos_pago).map(metodo => (
-                <span key={metodo} className="bg-accent-soft text-accent-text text-xs px-2.5 py-1 rounded-full">
+                <span key={metodo} className="bg-accent-soft text-accent-text text-xs px-3 py-1 rounded-full font-medium">
                   {METODOS_PAGO_LABELS[metodo] ?? metodo}
                 </span>
               ))}
+            </div>
+            <div className="flex justify-end mt-3">
+              <span className="text-primary text-xs font-bold flex items-center gap-1">
+                Elegir →
+              </span>
             </div>
           </button>
         ))}

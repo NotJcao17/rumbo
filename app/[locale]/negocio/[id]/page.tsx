@@ -114,7 +114,7 @@ export default function NegocioPage() {
     <div style={{
       minHeight: '100vh',
       backgroundColor: '#F5F5F5',
-      padding: '24px 16px 80px',
+      padding: '24px 16px 96px',
       fontFamily: 'Inter, sans-serif',
     }}>
       <button

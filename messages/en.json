@@ -73,6 +73,7 @@
     "horarioPlaceholder": "Mon-Fri 8:00-18:00, Sat 9:00-15:00",
     "btnRegistrar": "Register business",
     "btnGuardar": "Save changes",
+    "editarDeshabilitado": "To make changes to your business information, please contact an administrator. Or reach us directly at indivisatech@gmail.com",
     "btnGuardando": "Saving...",
     "msgRegistrado": "Business registered. It will be reviewed by an administrator.",
     "msgGuardado": "Changes saved.",
