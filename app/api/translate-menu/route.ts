@@ -13,23 +13,25 @@ async function obtenerTipoDeCambio(currency: string): Promise<number | null> {
   }
 
   try {
-    const res = await fetch(`https://economia.awesomeapi.com.br/json/last/MXN-${currency}`, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; RumboApp/1.0;)'
-      },
-      cache: 'no-store' // Evita interferencia de Next.js
-    })
+    const res = await fetch(`https://api.frankfurter.app/latest?from=MXN&to=${currency}`)
     
     if (!res.ok) {
-      const text = await res.text()
-      console.error(`Error AwesomeAPI status: ${res.status}. Body: ${text}`)
+      console.error(`Error HTTP de Frankfurter: ${res.status}`)
       return null
     }
 
     const data = await res.json()
-    const key = `MXN${currency}`
-    const rate = parseFloat(data[key]?.bid)
+    
+    // Protección: Validamos que la respuesta tenga las tasas de cambio
+    if (!data || !data.rates || typeof data.rates[currency] === 'undefined') {
+      console.error('Respuesta inválida de Frankfurter en translate-menu:', data)
+      return null
+    }
+
+    const rate = parseFloat(data.rates[currency])
+    
     if (isNaN(rate)) return null
+    
     cache[currency] = { rate, timestamp: ahora }
     return rate
   } catch (error) {

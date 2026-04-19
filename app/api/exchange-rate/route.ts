@@ -20,31 +20,35 @@ export async function GET(request: NextRequest){
         }
 
     //Si no hay caché o expiró, consultamos AwesomeAPI
-    try{
-    const response = await fetch(
-        `https://economia.awesomeapi.com.br/json/last/MXN-${currency}`
-    )
-    const data = await response.json()
-    console.log('Respuesta de AwesomeAPI:', JSON.stringify(data))
+    // Si no hay caché o expiró, consultamos Frankfurter API
+    try {
+        // Frankfurter usa parámetros en la URL: ?from=MXN&to=USD
+        const response = await fetch(
+            `https://api.frankfurter.app/latest?from=MXN&to=${currency}`
+        )
+        const data = await response.json()
+        console.log('Respuesta de Frankfurter:', JSON.stringify(data))
 
-    const key = `MXN${currency}`
-    console.log('Key buscada:', key)
-    console.log('Valor encontrado:', data[key])
+        // Validamos que la API haya devuelto la estructura correcta
+        if (!data || !data.rates || typeof data.rates[currency] === 'undefined') {
+            console.error('Estructura inesperada de la API o divisa no soportada:', data)
+            throw new Error('Respuesta inválida de Frankfurter')
+        }
 
-    const rate = parseFloat(data[key].bid)
-    console.log('Rate calculado:', rate)
+        const rate = parseFloat(data.rates[currency])
+        console.log('Rate calculado:', rate)
 
-    cache[currency] = {rate, timestamp: ahora}
+        cache[currency] = { rate, timestamp: ahora }
 
-    await fetch(`${request.nextUrl.origin}/api/log-evento`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tipo: 'conversion_divisa', metadata: { divisa: currency } }),
-    })
+        await fetch(`${request.nextUrl.origin}/api/log-evento`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tipo: 'conversion_divisa', metadata: { divisa: currency } }),
+        })
 
-    return NextResponse.json({ currency, rate, cached:false })
-} catch(error){
-    console.error('Error completo:', error)
-    return NextResponse.json({error: 'Error consultando tipo de cambio'}, {status:500})
-}
+        return NextResponse.json({ currency, rate, cached: false })
+    } catch (error) {
+        console.error('Error completo:', error)
+        return NextResponse.json({ error: 'Error consultando tipo de cambio' }, { status: 500 })
+    }
 }
