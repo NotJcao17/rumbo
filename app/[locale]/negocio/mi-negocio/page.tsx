@@ -304,11 +304,11 @@ export default function MiNegocioPage() {
 
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-semibold text-text-main">
+          <h1 className="font-display text-2xl font-bold text-text-main">
             {negocioId ? t('titleEditar') : t('titleRegistrar')}
           </h1>
           <button onClick={handleLogout}
-            className="text-sm text-accent hover:underline">
+            className="text-sm text-accent hover:underline transition-opacity hover:opacity-80">
             {t('cerrarSesion')}
           </button>
         </div>
@@ -329,7 +329,9 @@ export default function MiNegocioPage() {
         )}
 
         {/* Formulario */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm space-y-5">
+        <div className="card overflow-hidden">
+          <div className="h-1.5 w-full" style={{ background: 'linear-gradient(90deg, #0891B2 0%, #0EA5C9 60%, #EA580C 100%)' }} />
+        <div className="p-6 space-y-5">
 
           {/* Nombre */}
           <div>
@@ -441,12 +443,13 @@ export default function MiNegocioPage() {
 
           {/* Botón guardar */}
           <button type="button" onClick={handleSave} disabled={saving}
-            className="w-full bg-primary text-white font-medium py-2.5 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50">
+            className="btn-primary py-3 disabled:opacity-50">
             {saving
               ? t('btnGuardando')
               : negocioId ? t('btnGuardar') : t('btnRegistrar')}
           </button>
 
+        </div>
         </div>
       </div>
     </main>

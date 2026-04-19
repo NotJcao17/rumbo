@@ -65,60 +65,63 @@ export default function RegistroNegocioPage() {
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-bg-page px-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
-        <h1 className="text-2xl font-semibold text-text-main text-center mb-6">
-          {t('registroTitle')}
-        </h1>
+      <div className="card w-full max-w-md overflow-hidden">
+        <div className="h-1.5 w-full" style={{ background: 'linear-gradient(90deg, #0891B2 0%, #0EA5C9 60%, #EA580C 100%)' }} />
+        <div className="p-8">
+          <h1 className="font-display text-2xl font-bold text-text-main text-center mb-6">
+            {t('registroTitle')}
+          </h1>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-text-main mb-1">
-              {t('email')}
-            </label>
-            <input
-              id="email"
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border border-border-color px-3 py-2 text-text-main focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-          </div>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-text-main mb-1">
+                {t('email')}
+              </label>
+              <input
+                id="email"
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full rounded-lg border border-border-color px-3 py-2.5 text-text-main focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
+              />
+            </div>
 
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-text-main mb-1">
-              {t('password')}
-            </label>
-            <input
-              id="password"
-              type="password"
-              required
-              minLength={6}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-lg border border-border-color px-3 py-2 text-text-main focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-          </div>
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-text-main mb-1">
+                {t('password')}
+              </label>
+              <input
+                id="password"
+                type="password"
+                required
+                minLength={6}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full rounded-lg border border-border-color px-3 py-2.5 text-text-main focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
+              />
+            </div>
 
-          {error && (
-            <p className="text-sm text-accent">{error}</p>
-          )}
+            {error && (
+              <p className="text-sm text-accent bg-accent-soft px-3 py-2 rounded-lg">{error}</p>
+            )}
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-primary text-white font-medium py-2.5 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50"
-          >
-            {loading ? t('loading') : t('registroBtn')}
-          </button>
-        </form>
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn-primary py-3 disabled:opacity-50"
+            >
+              {loading ? t('loading') : t('registroBtn')}
+            </button>
+          </form>
 
-        <p className="text-sm text-text-secondary text-center mt-6">
-          {t('yaTienesCuenta')}{' '}
-          <Link href={`/${locale}/negocio/login`} className="text-primary hover:underline">
-            {t('iniciarSesion')}
-          </Link>
-        </p>
+          <p className="text-sm text-text-secondary text-center mt-6">
+            {t('yaTienesCuenta')}{' '}
+            <Link href={`/${locale}/negocio/login`} className="text-primary font-medium hover:underline">
+              {t('iniciarSesion')}
+            </Link>
+          </p>
+        </div>
       </div>
     </main>
   );

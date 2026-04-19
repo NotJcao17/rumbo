@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -12,8 +12,135 @@
   --color-bg-page: #F5F5F5;
   --color-accent-text: #9A3412;
   --font-sans: 'Inter', sans-serif;
+  --font-display: 'Poppins', sans-serif;
 }
 
 body {
   font-family: 'Inter', sans-serif;
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  /* Botón primario — gradiente cyan con glow */
+  .btn-primary {
+    background: linear-gradient(135deg, #0891B2 0%, #0E7490 100%);
+    color: white;
+    font-weight: 600;
+    border-radius: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    width: 100%;
+    box-shadow: 0 4px 14px rgba(8, 145, 178, 0.35);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(8, 145, 178, 0.45);
+  }
+  .btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(8, 145, 178, 0.3);
+  }
+  .btn-primary:disabled {
+    background: #E5E5E5;
+    color: #888888;
+    box-shadow: none;
+    transform: none;
+    cursor: not-allowed;
+  }
+
+  /* Botón acento — gradiente naranja con glow */
+  .btn-accent {
+    background: linear-gradient(135deg, #EA580C 0%, #C2410C 100%);
+    color: white;
+    font-weight: 600;
+    border-radius: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    width: 100%;
+    box-shadow: 0 4px 14px rgba(234, 88, 12, 0.35);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-accent:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(234, 88, 12, 0.45);
+  }
+  .btn-accent:active {
+    transform: translateY(0);
+  }
+
+  /* Botón ghost — borde con hover hacia primary */
+  .btn-ghost {
+    background: transparent;
+    color: #0891B2;
+    font-weight: 600;
+    border-radius: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    width: 100%;
+    border: 2px solid #0891B2;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+  .btn-ghost:hover {
+    background: #CFFAFE;
+    box-shadow: 0 2px 10px rgba(8, 145, 178, 0.15);
+  }
+
+  /* Tarjeta base con sombra multicapa */
+  .card {
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07), 0 1px 4px rgba(0, 0, 0, 0.04);
+  }
+
+  /* Tarjeta interactiva con hover lift */
+  .card-hover {
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+  .card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(8, 145, 178, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  /* Efecto glassmorphism */
+  .glass {
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  /* Chip de categoría seleccionado */
+  .chip-active {
+    border-color: #0891B2 !important;
+    background: #CFFAFE !important;
+    color: #164E63 !important;
+    box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.15);
+    transform: scale(1.04);
+    font-weight: 500;
+  }
+
+  /* Glow ring en botones de selección activos */
+  .ring-primary-glow {
+    box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.2);
+  }
+}
+
+/* Animación de pulse suave para el botón CTA principal del onboarding */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 4px 14px rgba(8, 145, 178, 0.35);
+  }
+  50% {
+    box-shadow: 0 4px 24px rgba(8, 145, 178, 0.60);
+  }
+}
+
+.btn-pulse {
+  animation: pulse-glow 2.5s ease-in-out infinite;
 }
