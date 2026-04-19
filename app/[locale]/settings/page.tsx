@@ -27,7 +27,7 @@ export default function Settings() {
   }
 
   return (
-    <main className="min-h-screen bg-bg-page flex items-center justify-center p-4">
+    <main className="min-h-screen bg-bg-page flex items-center justify-center p-4 pb-28">
       <div className="card w-full max-w-md overflow-hidden">
 
         {/* Banda gradiente superior */}

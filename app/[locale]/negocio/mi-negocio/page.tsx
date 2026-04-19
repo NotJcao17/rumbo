@@ -99,18 +99,19 @@ function LocationPicker({ lat, lng, onChange }: {
 
 // ─── Checkbox group ───────────────────────────────────────────────────────────
 
-function CheckboxGroup({ label, items, selected, onToggle, getLabel }: {
+function CheckboxGroup({ label, items, selected, onToggle, getLabel, disabled = false }: {
   label: string; items: string[]; selected: string[];
   onToggle: (v: string) => void; getLabel: (v: string) => string;
+  disabled?: boolean;
 }) {
   return (
     <fieldset>
       <legend className="block text-sm font-medium text-text-main mb-2">{label}</legend>
       <div className="grid grid-cols-2 gap-2">
         {items.map((item) => (
-          <label key={item} className="flex items-center gap-2 cursor-pointer">
+          <label key={item} className={`flex items-center gap-2 ${disabled ? 'cursor-default' : 'cursor-pointer'}`}>
             <input type="checkbox" checked={selected.includes(item)}
-              onChange={() => onToggle(item)} className="accent-primary rounded" />
+              onChange={() => onToggle(item)} disabled={disabled} className="accent-primary rounded" />
             <span className="text-sm text-text-main">{getLabel(item)}</span>
           </label>
         ))}
@@ -297,9 +298,12 @@ export default function MiNegocioPage() {
     return acc;
   }, {});
 
+  // Negocios ya registrados no son editables directamente — deben contactar al admin
+  const soloLectura = negocioId !== null;
+
   // ── render ─────────────────────────────────────────────────────────────────
   return (
-    <main className="min-h-screen bg-bg-page p-4 pb-12">
+    <main className="min-h-screen bg-bg-page p-4 pb-28">
       <div className="max-w-2xl mx-auto">
 
         {/* Header */}
@@ -336,38 +340,40 @@ export default function MiNegocioPage() {
           {/* Nombre */}
           <div>
             <label className="block text-sm font-medium text-text-main mb-1">
-              {t('fieldNombre')} *
+              {t('fieldNombre')} {!soloLectura && '*'}
             </label>
             <input type="text" value={form.nombre}
-              onChange={(e) => setForm({ ...form, nombre: e.target.value })}
+              onChange={(e) => !soloLectura && setForm({ ...form, nombre: e.target.value })}
               placeholder={t('fieldNombrePlaceholder')}
-              className="w-full rounded-lg border border-border-color px-3 py-2 text-text-main focus:outline-none focus:ring-2 focus:ring-primary" />
+              readOnly={soloLectura}
+              className={`w-full rounded-lg border border-border-color px-3 py-2 text-text-main focus:outline-none focus:ring-2 focus:ring-primary ${soloLectura ? 'bg-bg-page cursor-default' : ''}`} />
           </div>
 
           {/* Dirección */}
           <div>
             <label className="block text-sm font-medium text-text-main mb-1">
-              {t('fieldDireccion')} *
+              {t('fieldDireccion')} {!soloLectura && '*'}
             </label>
             <input type="text" value={form.direccion}
-              onChange={(e) => setForm({ ...form, direccion: e.target.value })}
+              onChange={(e) => !soloLectura && setForm({ ...form, direccion: e.target.value })}
               placeholder={t('fieldDireccionPlaceholder')}
-              className="w-full rounded-lg border border-border-color px-3 py-2 text-text-main focus:outline-none focus:ring-2 focus:ring-primary" />
+              readOnly={soloLectura}
+              className={`w-full rounded-lg border border-border-color px-3 py-2 text-text-main focus:outline-none focus:ring-2 focus:ring-primary ${soloLectura ? 'bg-bg-page cursor-default' : ''}`} />
           </div>
 
           {/* Mapa */}
           <div>
             <label className="block text-sm font-medium text-text-main mb-2">
-              {t('fieldUbicacion')} *
+              {t('fieldUbicacion')} {!soloLectura && '*'}
             </label>
             <LocationPicker lat={form.lat} lng={form.lng}
-              onChange={(lat, lng) => setForm((prev) => ({ ...prev, lat, lng }))} />
+              onChange={(lat, lng) => { if (!soloLectura) setForm((prev) => ({ ...prev, lat, lng })) }} />
           </div>
 
           {/* Categorías agrupadas */}
           <div>
             <label className="block text-sm font-medium text-text-main mb-2">
-              {t('fieldCategorias')} *
+              {t('fieldCategorias')} {!soloLectura && '*'}
             </label>
             {Object.entries(categoriasPorTipo).map(([tipo, cats]) => (
               <div key={tipo} className="mb-3">
@@ -376,9 +382,10 @@ export default function MiNegocioPage() {
                 </p>
                 <div className="grid grid-cols-2 gap-2">
                   {cats.map((cat) => (
-                    <label key={cat.id} className="flex items-center gap-2 cursor-pointer">
+                    <label key={cat.id} className={`flex items-center gap-2 ${soloLectura ? 'cursor-default' : 'cursor-pointer'}`}>
                       <input type="checkbox" checked={form.categorias_ids.includes(cat.id)}
-                        onChange={() => toggle('categorias_ids', cat.id)}
+                        onChange={() => !soloLectura && toggle('categorias_ids', cat.id)}
+                        disabled={soloLectura}
                         className="accent-primary rounded" />
                       <span className="text-sm text-text-main capitalize">{cat.nombre}</span>
                     </label>
@@ -389,9 +396,10 @@ export default function MiNegocioPage() {
           </div>
 
           {/* Es gastronómico */}
-          <label className="flex items-center gap-2 cursor-pointer">
+          <label className={`flex items-center gap-2 ${soloLectura ? 'cursor-default' : 'cursor-pointer'}`}>
             <input type="checkbox" checked={form.es_gastronomico}
-              onChange={(e) => setForm({ ...form, es_gastronomico: e.target.checked })}
+              onChange={(e) => !soloLectura && setForm({ ...form, es_gastronomico: e.target.checked })}
+              disabled={soloLectura}
               className="accent-primary rounded" />
             <span className="text-sm font-medium text-text-main">{t('fieldEsGastronomico')}</span>
           </label>
@@ -399,36 +407,38 @@ export default function MiNegocioPage() {
           {/* Rango de precios MIN-MAX */}
           <div>
             <label className="block text-sm font-medium text-text-main mb-1">
-              {t('fieldRangoPrecios')} *
+              {t('fieldRangoPrecios')} {!soloLectura && '*'}
             </label>
             <div className="flex items-center gap-2">
               <input type="number" min={0} value={form.rango_min}
-                onChange={(e) => setForm({ ...form, rango_min: e.target.value })}
+                onChange={(e) => !soloLectura && setForm({ ...form, rango_min: e.target.value })}
                 placeholder={t('rangoMin')}
-                className="w-full rounded-lg border border-border-color px-3 py-2 text-text-main focus:outline-none focus:ring-2 focus:ring-primary" />
+                readOnly={soloLectura}
+                className={`w-full rounded-lg border border-border-color px-3 py-2 text-text-main focus:outline-none focus:ring-2 focus:ring-primary ${soloLectura ? 'bg-bg-page cursor-default' : ''}`} />
               <span className="text-text-secondary font-medium">–</span>
               <input type="number" min={0} value={form.rango_max}
-                onChange={(e) => setForm({ ...form, rango_max: e.target.value })}
+                onChange={(e) => !soloLectura && setForm({ ...form, rango_max: e.target.value })}
                 placeholder={t('rangoMax')}
-                className="w-full rounded-lg border border-border-color px-3 py-2 text-text-main focus:outline-none focus:ring-2 focus:ring-primary" />
+                readOnly={soloLectura}
+                className={`w-full rounded-lg border border-border-color px-3 py-2 text-text-main focus:outline-none focus:ring-2 focus:ring-primary ${soloLectura ? 'bg-bg-page cursor-default' : ''}`} />
             </div>
             <p className="text-xs text-text-secondary mt-1">{t('rangoHint')}</p>
           </div>
 
           {/* Métodos de pago */}
-          <CheckboxGroup label={`${t('fieldMetodosPago')} *`} items={METODOS_PAGO}
+          <CheckboxGroup label={`${t('fieldMetodosPago')}${!soloLectura ? ' *' : ''}`} items={METODOS_PAGO}
             selected={form.metodos_pago} onToggle={(v) => toggle('metodos_pago', v)}
-            getLabel={(v) => t(`metodoPago.${v}`)} />
+            getLabel={(v) => t(`metodoPago.${v}`)} disabled={soloLectura} />
 
           {/* Idiomas */}
-          <CheckboxGroup label={`${t('fieldIdiomasAtencion')} *`} items={IDIOMAS}
+          <CheckboxGroup label={`${t('fieldIdiomasAtencion')}${!soloLectura ? ' *' : ''}`} items={IDIOMAS}
             selected={form.idiomas_atencion} onToggle={(v) => toggle('idiomas_atencion', v)}
-            getLabel={(v) => t(`idioma.${v}`)} />
+            getLabel={(v) => t(`idioma.${v}`)} disabled={soloLectura} />
 
           {/* Accesibilidad */}
           <CheckboxGroup label={t('fieldAccesibilidad')} items={ACCESIBILIDAD}
             selected={form.accesibilidad} onToggle={(v) => toggle('accesibilidad', v)}
-            getLabel={(v) => t(`acceso.${v}`)} />
+            getLabel={(v) => t(`acceso.${v}`)} disabled={soloLectura} />
 
           {/* Horario */}
           <div>
@@ -436,18 +446,23 @@ export default function MiNegocioPage() {
               {t('fieldHorario')}
             </label>
             <input type="text" value={form.horario}
-              onChange={(e) => setForm({ ...form, horario: e.target.value })}
+              onChange={(e) => !soloLectura && setForm({ ...form, horario: e.target.value })}
               placeholder={t('horarioPlaceholder')}
-              className="w-full rounded-lg border border-border-color px-3 py-2 text-text-main focus:outline-none focus:ring-2 focus:ring-primary" />
+              readOnly={soloLectura}
+              className={`w-full rounded-lg border border-border-color px-3 py-2 text-text-main focus:outline-none focus:ring-2 focus:ring-primary ${soloLectura ? 'bg-bg-page cursor-default' : ''}`} />
           </div>
 
-          {/* Botón guardar */}
-          <button type="button" onClick={handleSave} disabled={saving}
-            className="btn-primary py-3 disabled:opacity-50">
-            {saving
-              ? t('btnGuardando')
-              : negocioId ? t('btnGuardar') : t('btnRegistrar')}
-          </button>
+          {/* Botón guardar o aviso de solo lectura */}
+          {soloLectura ? (
+            <div className="rounded-xl border border-border-color bg-bg-page p-4">
+              <p className="text-sm text-text-secondary">{t('editarDeshabilitado')}</p>
+            </div>
+          ) : (
+            <button type="button" onClick={handleSave} disabled={saving}
+              className="btn-primary py-3 disabled:opacity-50">
+              {saving ? t('btnGuardando') : t('btnRegistrar')}
+            </button>
+          )}
 
         </div>
         </div>

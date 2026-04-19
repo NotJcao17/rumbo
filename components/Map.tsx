@@ -172,12 +172,15 @@ export default function Map() {
       el.style.border = '2px solid white'
       el.style.cursor = 'pointer'
 
-      const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
-        <div style="font-family: Inter, sans-serif; padding: 4px; min-width: 160px;">
-          <p style="font-weight: 600; margin: 0 0 4px 0; color: #164E63;">${negocio.nombre}</p>
-          <p style="margin: 0 0 2px 0; font-size: 12px; color: #888888;">${tRef.current('categoria')} ${tCatsRef.current(negocio.categoria_principal as any)}</p>
-          <p style="margin: 0 0 8px 0; font-size: 12px; color: #888888;">${tRef.current('rangoPrecios')} $${negocio.rango_precios} MXN${precioConvertido(negocio.rango_precios)}</p>
-          <button onclick="window.rumboVerFicha('${negocio.id}')" style="width:100%;padding:6px 0;background:#0891B2;color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;">Ver ficha →</button>
+      const popup = new mapboxgl.Popup({ offset: 16, maxWidth: '220px' }).setHTML(`
+        <div style="border-radius:12px;overflow:hidden;min-width:190px;font-family:Inter,sans-serif;box-shadow:0 4px 20px rgba(0,0,0,0.15);">
+          <div style="height:4px;background:linear-gradient(90deg,#0891B2,#EA580C);"></div>
+          <div style="padding:12px;">
+            <p style="font-weight:700;font-size:14px;color:#164E63;margin:0 0 3px;line-height:1.2;">${negocio.nombre}</p>
+            <p style="margin:0 0 2px;font-size:11px;color:#888;">${tCatsRef.current(negocio.categoria_principal as any)}</p>
+            <p style="margin:0 0 10px;font-size:11px;color:#888;">$${negocio.rango_precios} MXN${precioConvertido(negocio.rango_precios)}</p>
+            <button onclick="window.rumboVerFicha('${negocio.id}')" style="width:100%;padding:7px 0;background:#0891B2;color:white;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;letter-spacing:0.02em;">${tRef.current('verFicha')}</button>
+          </div>
         </div>
       `)
 
@@ -269,12 +272,15 @@ export default function Map() {
       el.style.cursor = 'pointer'
       el.innerText = (index + 1).toString()
 
-      const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
-        <div style="font-family: Inter, sans-serif; padding: 4px; min-width: 160px;">
-          <p style="font-weight: 600; margin: 0 0 4px 0; color: #164E63;">${index + 1}. ${negocio.nombre}</p>
-          <p style="margin: 0 0 2px 0; font-size: 12px; color: #888888;">${tRef.current('categoria')} ${tCatsRef.current(negocio.categoria_principal as any)}</p>
-          <p style="margin: 0 0 8px 0; font-size: 12px; color: #888888;">${tRef.current('rangoPrecios')} $${negocio.rango_precios} MXN</p>
-          <button onclick="window.rumboVerFichaTab('${negocio.id}')" style="width:100%;padding:6px 0;background:#0891B2;color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;">${tRef.current('verFicha')}</button>
+      const popup = new mapboxgl.Popup({ offset: 16, maxWidth: '220px' }).setHTML(`
+        <div style="border-radius:12px;overflow:hidden;min-width:190px;font-family:Inter,sans-serif;box-shadow:0 4px 20px rgba(0,0,0,0.15);">
+          <div style="height:4px;background:linear-gradient(90deg,#0891B2,#EA580C);"></div>
+          <div style="padding:12px;">
+            <p style="font-weight:700;font-size:14px;color:#164E63;margin:0 0 3px;line-height:1.2;">${index + 1}. ${negocio.nombre}</p>
+            <p style="margin:0 0 2px;font-size:11px;color:#888;">${tCatsRef.current(negocio.categoria_principal as any)}</p>
+            <p style="margin:0 0 10px;font-size:11px;color:#888;">$${negocio.rango_precios} MXN</p>
+            <button onclick="window.rumboVerFichaTab('${negocio.id}')" style="width:100%;padding:7px 0;background:#0891B2;color:white;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;letter-spacing:0.02em;">${tRef.current('verFicha')}</button>
+          </div>
         </div>
       `)
 
@@ -475,22 +481,22 @@ export default function Map() {
           onClick={() => router.push(`/${locale}/route-config`)}
           style={{
             position: 'fixed',
-            bottom: '80px',
-            backgroundColor: '#0891B2',
+            bottom: '88px',
+            background: 'linear-gradient(135deg, #0891B2 0%, #0E7490 100%)',
             color: 'white',
             border: 'none',
             borderRadius: '999px',
-            padding: '12px 20px',
-            marginBottom: '20px',
+            padding: '13px 24px',
             fontSize: '14px',
-            fontWeight: 600,
+            fontWeight: 700,
             cursor: 'pointer',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+            boxShadow: '0 4px 20px rgba(8,145,178,0.45)',
             fontFamily: 'Inter, sans-serif',
             whiteSpace: 'nowrap',
+            letterSpacing: '0.02em',
           }}
         >
-          {modoRuta ? t('cambiarRuta') : t('generarRuta')}
+          {modoRuta ? t('cambiarRuta') : `✦ ${t('generarRuta')}`}
         </button>
 
         {paradas.length > 0 && (

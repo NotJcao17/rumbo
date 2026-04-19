@@ -131,16 +131,125 @@ body {
   }
 }
 
-/* Animación de pulse suave para el botón CTA principal del onboarding */
+/* ── Animaciones ─────────────────────────────────────────── */
+
 @keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 4px 14px rgba(8, 145, 178, 0.35);
-  }
-  50% {
-    box-shadow: 0 4px 24px rgba(8, 145, 178, 0.60);
-  }
+  0%, 100% { box-shadow: 0 4px 14px rgba(8, 145, 178, 0.35); }
+  50%       { box-shadow: 0 4px 24px rgba(8, 145, 178, 0.60); }
 }
 
-.btn-pulse {
-  animation: pulse-glow 2.5s ease-in-out infinite;
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.82); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+@keyframes scan-line {
+  0%, 100% { top: 8%; }
+  50%       { top: 88%; }
+}
+
+@keyframes marker-pulse {
+  0%, 100% { box-shadow: 0 0 0 0   rgba(234, 88, 12, 0.55); }
+  70%       { box-shadow: 0 0 0 10px rgba(234, 88, 12, 0);   }
+}
+
+@keyframes gradient-x {
+  0%, 100% { background-position: 0%   50%; }
+  50%       { background-position: 100% 50%; }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Clases de animación ──────────────────────────────────── */
+
+.btn-pulse         { animation: pulse-glow  2.5s ease-in-out infinite; }
+.animate-float     { animation: float       3s   ease-in-out infinite; }
+.animate-slide-up  { animation: slide-up    0.4s ease         both; }
+.animate-scale-in  { animation: scale-in    0.3s ease         both; }
+.animate-fade-in   { animation: fade-in     0.5s ease         both; }
+.animate-spin-slow { animation: spin-slow   8s   linear       infinite; }
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 3s ease infinite;
+}
+
+/* ── Efectos visuales extra ────────────────────────────────── */
+
+/* Texto con gradiente primario (cian → cian oscuro) */
+.text-gradient-primary {
+  background: linear-gradient(135deg, #0891B2 0%, #164E63 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Texto con gradiente cálido (naranja → naranja oscuro) */
+.text-gradient-warm {
+  background: linear-gradient(135deg, #EA580C 0%, #9A3412 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Efecto shimmer para hover o loading */
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite;
+}
+
+/* Blob decorativo difuminado (partículas hero) */
+.hero-glow {
+  filter: blur(60px);
+  opacity: 0.30;
+  pointer-events: none;
+}
+
+/* Card con sombra más prominente, cian-tinted */
+.card-elevated {
+  background: white;
+  border-radius: 1.25rem;
+  box-shadow:
+    0 8px 32px rgba(8, 145, 178, 0.10),
+    0 2px 8px  rgba(0, 0, 0, 0.06);
+}
+
+/* Glow ring naranja para marcadores activos */
+.ring-accent-glow {
+  box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.22);
+}
+
+/* Línea de escaneo animada — usada en scanner */
+.scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #0891B2, transparent);
+  animation: scan-line 2s ease-in-out infinite;
+  box-shadow: 0 0 8px rgba(8, 145, 178, 0.7);
 }

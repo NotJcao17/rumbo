@@ -75,88 +75,106 @@ export default function BusinessCard({ negocio, onTraducirMenu }: Props) {
     window.open(url, '_blank')
   }
 
+  const categoryEmoji = negocio.es_gastronomico ? '🍽️' : '🛍️'
+
   return (
-    <div className="card max-w-md w-full overflow-hidden">
+    <div className="card-elevated max-w-md w-full overflow-hidden animate-slide-up">
 
-      {/* Banda de gradiente superior */}
-      <div className="h-2 w-full" style={{ background: 'linear-gradient(90deg, #0891B2 0%, #0EA5C9 60%, #EA580C 100%)' }} />
+      {/* Header visual con gradiente animado */}
+      <div
+        className="relative overflow-hidden animate-gradient-x"
+        style={{
+          height: '96px',
+          background: 'linear-gradient(135deg, #0891B2, #0EA5E9, #EA580C, #0891B2)',
+          backgroundSize: '300% 300%',
+        }}
+      >
+        {/* Emoji de categoría como fondo decorativo */}
+        <span
+          className="absolute inset-0 flex items-center justify-center select-none pointer-events-none"
+          style={{ fontSize: '64px', opacity: 0.18, filter: 'grayscale(0.2)' }}
+        >
+          {categoryEmoji}
+        </span>
 
-      <div className="p-6 flex flex-col gap-5">
+        {/* Brillo superior izquierdo */}
+        <div
+          className="absolute top-0 left-0 w-32 h-32 rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.18) 0%, transparent 70%)', transform: 'translate(-30%, -30%)' }}
+        />
 
-        {/* Encabezado */}
-        <div className="flex items-start justify-between">
-          <div>
-            <h2 className="font-display text-xl font-bold text-text-main">{negocio.nombre}</h2>
-            <p className="text-sm text-gray-400 mt-0.5">{negocio.direccion}</p>
-          </div>
-          {negocio.estado === 'aprobado' && (
-            <span
-              className="text-white text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm flex items-center gap-1"
-              style={{ background: 'linear-gradient(135deg, #EA580C, #C2410C)' }}
-            >
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                <path d="M2 5l2 2 4-4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              {t('verificado')}
-            </span>
-          )}
-        </div>
-
-        {/* Distancia al Estadio Azteca */}
-        {distanciaKm !== null && (
-          <div className="flex items-center gap-1">
-            <span className="bg-surface text-text-main text-sm px-3 py-1 rounded-full flex items-center gap-1.5">
-              {/* Walking icon */}
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                <path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.8-.7" fill="currentColor"/>
-              </svg>
-              {distanciaKm >= 1
-                ? `${t('a')} ${distanciaKm.toFixed(1)} km ${t('distanciaEstadio')}`
-                : `${t('a')} ${Math.round(distanciaKm * 1000)} m ${t('distanciaEstadio')}`
-              }
-            </span>
-          </div>
+        {/* Badge verificado — flotando arriba a la izquierda */}
+        {negocio.estado === 'aprobado' && (
+          <span
+            className="absolute top-3 left-3 text-white text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1"
+            style={{ background: 'rgba(0,0,0,0.28)', backdropFilter: 'blur(8px)' }}
+          >
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M2 5l2 2 4-4" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            {t('verificado')}
+          </span>
         )}
+
+        {/* Distancia — flotando arriba a la derecha */}
+        {distanciaKm !== null && (
+          <span
+            className="absolute top-3 right-3 text-text-main px-2.5 py-1.5 rounded-full flex flex-col items-end leading-tight"
+            style={{ background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(8px)' }}
+          >
+            <span className="text-xs font-bold flex items-center gap-1">
+              📍 {distanciaKm >= 1
+                ? `${distanciaKm.toFixed(1)} km`
+                : `${Math.round(distanciaKm * 1000)} m`}
+            </span>
+            <span className="text-[9px] font-medium text-text-secondary">{t('distanciaEstadio')}</span>
+          </span>
+        )}
+
+        {/* Nombre del negocio sobre el header — parte baja */}
+        <div
+          className="absolute bottom-0 left-0 right-0 px-5 pb-3 pt-6"
+          style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 100%)' }}
+        >
+          <h2 className="font-display text-xl font-bold text-white leading-tight drop-shadow">
+            {negocio.nombre}
+          </h2>
+        </div>
+      </div>
+
+      <div className="p-5 flex flex-col gap-4">
+
+        {/* Dirección */}
+        <p className="text-sm text-text-secondary flex items-center gap-1.5">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" className="shrink-0">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/>
+          </svg>
+          {negocio.direccion}
+        </p>
 
         {/* Horario */}
         {negocio.horario && (
-          <div>
-            <p className="text-xs font-medium text-text-secondary uppercase tracking-wide mb-1 flex items-center gap-1.5">
-              <span className="inline-block w-3 h-0.5 rounded-full bg-primary/40" />
-              {t('horario')}
-            </p>
+          <InfoSection label={t('horario')} icon="🕐">
             <p className="text-sm text-text-main">{negocio.horario}</p>
-          </div>
+          </InfoSection>
         )}
 
         {/* Rango de precios */}
-        <div>
-          <p className="text-xs font-medium text-text-secondary uppercase tracking-wide mb-2 flex items-center gap-1.5">
-            <span className="inline-block w-3 h-0.5 rounded-full bg-primary/40" />
-            {t('preciosReferencia')}
-          </p>
+        <InfoSection label={t('preciosReferencia')} icon="💰">
           <div className="flex gap-2 flex-wrap">
-            <span className="bg-surface text-text-main text-sm px-3 py-1 rounded-full flex items-center gap-1.5">
-              {/* Tag/price icon */}
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
-                <path d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z" fill="currentColor"/>
-              </svg>
+            <span className="bg-surface text-text-main text-sm px-3 py-1 rounded-full font-medium">
               ${negocio.rango_precios} MXN
             </span>
             {rate && currency !== 'MXN' && (
-              <span className="bg-surface text-text-main text-sm px-3 py-1 rounded-full">
+              <span className="bg-accent-soft text-accent-text text-sm px-3 py-1 rounded-full font-medium">
                 {convertirRango(negocio.rango_precios)}
               </span>
             )}
           </div>
-        </div>
+        </InfoSection>
 
         {/* Métodos de pago */}
-        <div>
-          <p className="text-xs font-medium text-text-secondary uppercase tracking-wide mb-2 flex items-center gap-1.5">
-            <span className="inline-block w-3 h-0.5 rounded-full bg-primary/40" />
-            {t('metodosPago')}
-          </p>
+        <InfoSection label={t('metodosPago')} icon="💳">
           <div className="flex flex-wrap gap-2">
             {negocio.metodos_pago.map((metodo) => (
               <span key={metodo} className="bg-surface text-text-main text-sm px-3 py-1 rounded-full">
@@ -164,30 +182,22 @@ export default function BusinessCard({ negocio, onTraducirMenu }: Props) {
               </span>
             ))}
           </div>
-        </div>
+        </InfoSection>
 
         {/* Idiomas de atención */}
-        <div>
-          <p className="text-xs font-medium text-text-secondary uppercase tracking-wide mb-2 flex items-center gap-1.5">
-            <span className="inline-block w-3 h-0.5 rounded-full bg-primary/40" />
-            {t('idiomasAtencion')}
-          </p>
+        <InfoSection label={t('idiomasAtencion')} icon="🌐">
           <div className="flex flex-wrap gap-2">
             {negocio.idiomas_atencion.map((idioma) => (
-              <span key={idioma} className="bg-surface text-text-main text-sm px-3 py-1 rounded-full">
+              <span key={idioma} className="bg-purple-50 text-purple-700 text-sm px-3 py-1 rounded-full">
                 {t(`idiomasMap.${idioma}` as any)}
               </span>
             ))}
           </div>
-        </div>
+        </InfoSection>
 
         {/* Accesibilidad */}
         {negocio.accesibilidad.length > 0 && (
-          <div>
-            <p className="text-xs font-medium text-text-secondary uppercase tracking-wide mb-2 flex items-center gap-1.5">
-              <span className="inline-block w-3 h-0.5 rounded-full bg-primary/40" />
-              {t('accesibilidad')}
-            </p>
+          <InfoSection label={t('accesibilidad')} icon="♿">
             <div className="flex flex-wrap gap-2">
               {negocio.accesibilidad.map((item) => (
                 <span key={item} className="bg-surface text-text-main text-sm px-3 py-1 rounded-full">
@@ -195,17 +205,16 @@ export default function BusinessCard({ negocio, onTraducirMenu }: Props) {
                 </span>
               ))}
             </div>
-          </div>
+          </InfoSection>
         )}
 
         {/* Botones de acción */}
-        <div className="flex flex-col gap-3 pt-2">
+        <div className="flex flex-col gap-3 pt-1">
           {negocio.es_gastronomico && (
             <button
               onClick={onTraducirMenu ?? (() => router.push(`/${locale}/scanner`))}
-              className="btn-accent flex items-center justify-center gap-2 py-3"
+              className="btn-accent flex items-center justify-center gap-2 py-3 text-base"
             >
-              {/* Camera icon */}
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                 <path d="M12 15.2C10.2 15.2 8.8 13.8 8.8 12S10.2 8.8 12 8.8 15.2 10.2 15.2 12 13.8 15.2 12 15.2zM12 7C9.24 7 7 9.24 7 12S9.24 17 12 17 17 14.76 17 12 14.76 7 12 7zM2 13H4V11H2V13zM20 13H22V11H20V13zM11 2V4H13V2H11zM11 20V22H13V20H11z" fill="white"/>
               </svg>
@@ -214,9 +223,8 @@ export default function BusinessCard({ negocio, onTraducirMenu }: Props) {
           )}
           <button
             onClick={abrirEnGoogleMaps}
-            className="btn-ghost flex items-center justify-center gap-2 py-3"
+            className="btn-ghost flex items-center justify-center gap-2 py-3 text-base"
           >
-            {/* Map icon */}
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/>
             </svg>
@@ -225,6 +233,18 @@ export default function BusinessCard({ negocio, onTraducirMenu }: Props) {
         </div>
 
       </div>
+    </div>
+  )
+}
+
+function InfoSection({ label, icon, children }: { label: string; icon: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <p className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2 flex items-center gap-1.5">
+        <span className="text-sm">{icon}</span>
+        {label}
+      </p>
+      {children}
     </div>
   )
 }
