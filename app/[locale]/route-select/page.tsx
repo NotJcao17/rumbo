@@ -46,15 +46,15 @@ export default function RouteSelect() {
   const zonaId = searchParams.get('zona_id')
 
   const METODOS_PAGO_LABELS: Record<string, string> = {
-    efectivo: `💵 ${tCard('efectivo')}`,
-    tarjeta: `💳 ${tCard('tarjeta')}`,
-    transferencia: `📲 ${tCard('transferencia')}`,
+    efectivo: tCard('efectivo'),
+    tarjeta: tCard('tarjeta'),
+    transferencia: tCard('transferencia'),
   }
 
   const IDIOMAS_LABELS: Record<string, string> = {
-    es: '🇲🇽 Español',
-    en: '🇺🇸 English',
-    de: '🇩🇪 Deutsch',
+    es: 'Español',
+    en: 'English',
+    de: 'Deutsch',
   }
 
   function normalizarMetodos(metodos: string[]): string[] {
@@ -98,7 +98,6 @@ export default function RouteSelect() {
         return
       }
 
-      // Agrupar por categoría
       const agrupado: Record<string, PasoCategoria> = {}
       data.forEach((item: OpcionNegocio) => {
         if (!agrupado[item.categoria_id]) {
@@ -151,15 +150,8 @@ export default function RouteSelect() {
 
   if (cargando) {
     return (
-      <div style={{
-        minHeight: '100vh',
-        backgroundColor: '#F5F5F5',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontFamily: 'Inter, sans-serif',
-      }}>
-        <p style={{ color: '#888888' }}>{tSelect('buscando')}</p>
+      <div className="min-h-screen bg-bg-page flex items-center justify-center">
+        <p className="text-text-secondary">{tSelect('buscando')}</p>
       </div>
     )
   }
@@ -169,122 +161,80 @@ export default function RouteSelect() {
   const opcionesDisponibles = paso.opciones.filter(o => !idsSeleccionados.has(o.negocio_id))
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: '#F5F5F5',
-      padding: '24px 16px',
-      fontFamily: 'Inter, sans-serif',
-    }}>
+    <div className="min-h-screen bg-bg-page pb-24 px-4 pt-6">
 
       {/* Encabezado */}
-      <div style={{ marginBottom: '24px' }}>
+      <div className="mb-6">
         <button
           onClick={volverAtras}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: '#0891B2',
-            fontSize: '14px',
-            cursor: 'pointer',
-            padding: 0,
-            marginBottom: '16px',
-          }}
+          className="text-primary text-sm font-medium cursor-pointer mb-4 flex items-center gap-1 hover:opacity-80 transition-opacity"
         >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" fill="currentColor"/>
+          </svg>
           {tSelect('atras')}
         </button>
 
-        {/* Indicador de progreso */}
-        <div style={{ display: 'flex', gap: '6px', marginBottom: '16px' }}>
+        {/* Barra de progreso por pasos */}
+        <div className="flex gap-1.5 mb-4">
           {pasos.map((_, i) => (
             <div
               key={i}
-              style={{
-                flex: 1,
-                height: '4px',
-                borderRadius: '999px',
-                backgroundColor: i <= pasoActual ? '#0891B2' : '#E5E5E5',
-              }}
+              className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${
+                i < pasoActual
+                  ? 'bg-primary'
+                  : i === pasoActual
+                  ? 'bg-primary/50'
+                  : 'bg-border-color'
+              }`}
             />
           ))}
         </div>
 
-        <p style={{ color: '#888888', fontSize: '13px', margin: '0 0 4px 0' }}>
+        <p className="text-text-secondary text-xs mb-1">
           {tSelect('paso', { n: pasoActual + 1, total: pasos.length })}
         </p>
-        <h1 style={{ color: '#164E63', fontSize: '20px', fontWeight: 600, margin: 0 }}>
+        <h1 className="font-display text-xl font-bold text-text-main">
           {tSelect('dondePrefières', { categoria: tCats(paso.categoria_nombre as any) })}
         </h1>
       </div>
 
       {/* Tarjetas de opciones */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      <div className="flex flex-col gap-3">
         {opcionesDisponibles.map((opcion) => (
           <button
             key={opcion.negocio_id}
             onClick={() => seleccionarNegocio(opcion)}
-            style={{
-              backgroundColor: 'white',
-              border: '1px solid #E5E5E5',
-              borderRadius: '12px',
-              padding: '16px',
-              textAlign: 'left',
-              cursor: 'pointer',
-              width: '100%',
-            }}
+            className="card card-hover p-4 text-left w-full"
           >
-            <p style={{ color: '#164E63', fontWeight: 600, margin: '0 0 4px 0', fontSize: '15px' }}>
+            <p className="font-display text-text-main font-semibold mb-1 text-[15px]">
               {opcion.nombre}
             </p>
-            <p style={{ color: '#888888', fontSize: '13px', margin: '0 0 10px 0' }}>
-              {opcion.direccion}
-            </p>
-            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+            <p className="text-text-secondary text-sm mb-3">{opcion.direccion}</p>
+            <div className="flex gap-1.5 flex-wrap">
+
               {/* Precio */}
-              <span style={{
-                backgroundColor: '#CFFAFE',
-                color: '#164E63',
-                fontSize: '12px',
-                padding: '3px 10px',
-                borderRadius: '999px',
-              }}>
+              <span className="bg-surface text-text-main text-xs px-2.5 py-1 rounded-full">
                 ${opcion.rango_precios} MXN
               </span>
 
-              {/* Distancia — solo si GPS fue exitoso */}
+              {/* Distancia */}
               {gpsUsado && opcion.distancia > 0 && (
-                <span style={{
-                  backgroundColor: '#CFFAFE',
-                  color: '#164E63',
-                  fontSize: '12px',
-                  padding: '3px 10px',
-                  borderRadius: '999px',
-                }}>
+                <span className="bg-surface text-text-main text-xs px-2.5 py-1 rounded-full">
                   {Math.round(opcion.distancia)} m
                 </span>
               )}
 
-              {/* Idiomas de atención */}
+              {/* Idiomas */}
               {opcion.idiomas_atencion?.map(idioma => (
-                <span key={idioma} style={{
-                  backgroundColor: '#F5F3FF',
-                  color: '#6D28D9',
-                  fontSize: '12px',
-                  padding: '3px 10px',
-                  borderRadius: '999px',
-                }}>
+                <span key={idioma} className="bg-purple-50 text-purple-700 text-xs px-2.5 py-1 rounded-full">
                   {IDIOMAS_LABELS[idioma] ?? idioma}
                 </span>
               ))}
 
-              {/* Métodos de pago (débito y crédito unificados como "tarjeta") */}
+              {/* Métodos de pago */}
               {normalizarMetodos(opcion.metodos_pago).map(metodo => (
-                <span key={metodo} style={{
-                  backgroundColor: '#FFF7ED',
-                  color: '#EA580C',
-                  fontSize: '12px',
-                  padding: '3px 10px',
-                  borderRadius: '999px',
-                }}>
+                <span key={metodo} className="bg-accent-soft text-accent-text text-xs px-2.5 py-1 rounded-full">
                   {METODOS_PAGO_LABELS[metodo] ?? metodo}
                 </span>
               ))}

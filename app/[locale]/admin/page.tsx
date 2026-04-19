@@ -96,10 +96,10 @@ function NegocioCard({
   return (
     <button
       onClick={onClick}
-      className="w-full text-left bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow border border-border-color"
+      className="card card-hover w-full text-left p-4"
     >
       <div className="flex justify-between items-start">
-        <h3 className="text-base font-semibold text-text-main">{negocio.nombre}</h3>
+        <h3 className="font-display text-base font-semibold text-text-main">{negocio.nombre}</h3>
         <span className="text-xs text-text-secondary whitespace-nowrap ml-2">
           {tRegistrado}: {fecha}
         </span>
@@ -153,8 +153,10 @@ function NegocioDetail({
         ← {t('btnVolver')}
       </button>
 
-      <div className="bg-white rounded-2xl p-6 shadow-sm space-y-5">
-        <h2 className="text-xl font-semibold text-text-main">{negocio.nombre}</h2>
+      <div className="card overflow-hidden">
+        <div className="h-1.5 w-full" style={{ background: 'linear-gradient(90deg, #0891B2 0%, #0EA5C9 60%, #EA580C 100%)' }} />
+        <div className="p-6 space-y-5">
+        <h2 className="font-display text-xl font-bold text-text-main">{negocio.nombre}</h2>
 
         {/* Dirección */}
         <div>
@@ -261,15 +263,16 @@ function NegocioDetail({
         {negocio.estado === 'pendiente' && (
           <div className="flex gap-3 pt-2">
             <button onClick={onAprobar} disabled={acting}
-              className="flex-1 bg-primary text-white font-medium py-2.5 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50">
+              className="btn-primary flex-1 py-2.5 disabled:opacity-50">
               {t('btnAprobar')}
             </button>
             <button onClick={onRechazar} disabled={acting}
-              className="flex-1 bg-accent text-white font-medium py-2.5 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50">
+              className="btn-accent flex-1 py-2.5 disabled:opacity-50">
               {t('btnRechazar')}
             </button>
           </div>
         )}
+        </div>
       </div>
     </div>
   );
@@ -370,8 +373,8 @@ export default function AdminPage() {
 
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-semibold text-text-main">{t('title')}</h1>
-          <button onClick={handleLogout} className="text-sm text-accent hover:underline">
+          <h1 className="font-display text-2xl font-bold text-text-main">{t('title')}</h1>
+          <button onClick={handleLogout} className="text-sm text-accent hover:underline transition-opacity hover:opacity-80">
             {t('cerrarSesion')}
           </button>
         </div>
@@ -395,23 +398,23 @@ export default function AdminPage() {
         ) : (
           <>
             {/* Tabs */}
-            <div className="flex gap-1 mb-5 bg-white rounded-lg p-1 shadow-sm">
+            <div className="flex mb-5 border-b border-border-color">
               <button
                 onClick={() => setTab('pendientes')}
-                className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`flex-1 py-2.5 text-sm font-medium transition-all duration-200 border-b-2 -mb-px ${
                   tab === 'pendientes'
-                    ? 'bg-primary text-white'
-                    : 'text-text-secondary hover:text-text-main'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-text-secondary hover:text-text-main'
                 }`}
               >
                 {t('tabPendientes')} ({pendientes.length})
               </button>
               <button
                 onClick={() => setTab('aprobados')}
-                className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`flex-1 py-2.5 text-sm font-medium transition-all duration-200 border-b-2 -mb-px ${
                   tab === 'aprobados'
-                    ? 'bg-primary text-white'
-                    : 'text-text-secondary hover:text-text-main'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-text-secondary hover:text-text-main'
                 }`}
               >
                 {t('tabAprobados')} ({aprobados.length})

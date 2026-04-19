@@ -33,7 +33,6 @@ export default function RouteConfig() {
   const [zonaSeleccionada, setZonaSeleccionada] = useState(ZONAS[0])
   const [gpsDisponible, setGpsDisponible] = useState(true)
 
-  // Mapeo de tipo de BD → clave de traducción
   const TIPO_KEYS: Record<string, string> = {
     gastronomia: 'tipoGastronomia',
     cultura: 'tipoCultura',
@@ -104,85 +103,54 @@ export default function RouteConfig() {
     {}
   )
 
+  const listo = seleccionadas.length === numLugares
+
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: '#F5F5F5',
-      padding: '24px 16px 80px',
-      fontFamily: 'Inter, sans-serif',
-    }}>
-      <h1 style={{ color: '#164E63', fontSize: '22px', fontWeight: 600, marginBottom: '24px' }}>
+    <div className="min-h-screen bg-bg-page pb-24 px-4 pt-6">
+
+      <h1 className="font-display text-2xl font-bold text-text-main mb-6">
         {t('titulo')}
       </h1>
 
       {/* Selector de número de lugares */}
-      <div style={{
-        backgroundColor: 'white',
-        borderRadius: '12px',
-        padding: '16px',
-        marginBottom: '16px',
-        border: '1px solid #E5E5E5',
-      }}>
-        <p style={{ color: '#164E63', fontWeight: 500, marginBottom: '12px' }}>
-          {t('cuantosLugares')}
-        </p>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+      <div className="card p-4 mb-4">
+        <p className="text-text-main font-medium mb-3">{t('cuantosLugares')}</p>
+        <div className="flex items-center gap-4">
           <button
             onClick={() => {
               const nuevo = Math.max(2, numLugares - 1)
               setNumLugares(nuevo)
               setSeleccionadas(prev => prev.slice(0, nuevo))
             }}
-            style={{
-              width: '36px', height: '36px', borderRadius: '50%',
-              border: '1px solid #E5E5E5', backgroundColor: 'white',
-              fontSize: '20px', cursor: 'pointer', color: '#164E63',
-            }}
-          >−</button>
-          <span style={{ fontSize: '24px', fontWeight: 600, color: '#164E63' }}>
-            {numLugares}
-          </span>
+            className="w-9 h-9 rounded-full border border-border-color bg-white text-text-main text-xl font-medium cursor-pointer hover:border-primary hover:bg-surface transition-all duration-150 flex items-center justify-center"
+          >
+            −
+          </button>
+          <span className="text-2xl font-bold font-display text-text-main">{numLugares}</span>
           <button
             onClick={() => setNumLugares(n => Math.min(6, n + 1))}
-            style={{
-              width: '36px', height: '36px', borderRadius: '50%',
-              border: '1px solid #E5E5E5', backgroundColor: 'white',
-              fontSize: '20px', cursor: 'pointer', color: '#164E63',
-            }}
-          >+</button>
+            className="w-9 h-9 rounded-full border border-border-color bg-white text-text-main text-xl font-medium cursor-pointer hover:border-primary hover:bg-surface transition-all duration-150 flex items-center justify-center"
+          >
+            +
+          </button>
         </div>
       </div>
 
       {/* Selector de zona */}
-      <div style={{
-        backgroundColor: 'white',
-        borderRadius: '12px',
-        padding: '16px',
-        marginBottom: '16px',
-        border: '1px solid #E5E5E5',
-      }}>
-        <p style={{ color: '#164E63', fontWeight: 500, marginBottom: '12px' }}>
-          {t('desdeZona')}
-        </p>
+      <div className="card p-4 mb-4">
+        <p className="text-text-main font-medium mb-3">{t('desdeZona')}</p>
         <select
           value={zonaSeleccionada.id}
           onChange={(e) => {
             const zona = ZONAS.find(z => z.id === e.target.value)!
             setZonaSeleccionada(zona)
           }}
+          className="w-full px-3 py-2.5 rounded-lg border border-border-color text-sm text-text-main bg-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary cursor-pointer transition-all duration-150"
           style={{
-            width: '100%',
-            padding: '10px 12px',
-            borderRadius: '8px',
-            border: '1px solid #E5E5E5',
-            fontSize: '14px',
-            color: '#164E63',
-            backgroundColor: 'white',
             appearance: 'none',
             backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E")`,
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'right 12px center',
-            cursor: 'pointer',
           }}
         >
           {ZONAS.map(zona => (
@@ -193,52 +161,36 @@ export default function RouteConfig() {
             </option>
           ))}
         </select>
-      </div>      
+      </div>
 
       {/* Checkboxes de categorías */}
-      <div style={{
-        backgroundColor: 'white',
-        borderRadius: '12px',
-        padding: '16px',
-        marginBottom: '24px',
-        border: '1px solid #E5E5E5',
-      }}>
-        <p style={{ color: '#164E63', fontWeight: 500, marginBottom: '16px' }}>
-          {t('queQuieresHacer')}
-        </p>
+      <div className="card p-4 mb-6">
+        <p className="text-text-main font-medium mb-4">{t('queQuieresHacer')}</p>
 
         {cargando ? (
-          <p style={{ color: '#888888', fontSize: '14px' }}>{t('cargando')}</p>
+          <p className="text-text-secondary text-sm">{t('cargando')}</p>
         ) : (
           Object.entries(categoriasPorTipo).map(([tipo, cats]) => (
-            <div key={tipo} style={{ marginBottom: '16px' }}>
-              <p style={{ fontSize: '12px', color: '#888888', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <div key={tipo} className="mb-4 last:mb-0">
+              <p className="text-xs text-text-secondary uppercase tracking-wider mb-2">
                 {TIPO_KEYS[tipo] ? t(TIPO_KEYS[tipo] as any) : tipo}
               </p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              <div className="flex flex-wrap gap-2">
                 {cats.map(cat => {
                   const activa = seleccionadas.includes(cat.id)
+                  const deshabilitada = !seleccionadas.includes(cat.id) && seleccionadas.length >= numLugares
                   return (
                     <button
                       key={cat.id}
                       onClick={() => toggleCategoria(cat.id)}
-                      disabled={!seleccionadas.includes(cat.id) && seleccionadas.length >= numLugares}
-                      style={{
-                        padding: '6px 14px',
-                        borderRadius: '999px',
-                        border: '1px solid',
-                        borderColor: activa ? '#0891B2' : '#E5E5E5',
-                        backgroundColor: activa ? '#CFFAFE' : 'white',
-                        color: activa ? '#164E63' : '#888888',
-                        fontSize: '14px',
-                        cursor: (!seleccionadas.includes(cat.id) && seleccionadas.length >= numLugares)
-                          ? 'not-allowed'
-                          : 'pointer',
-                        fontWeight: activa ? 500 : 400,
-                        opacity: (!seleccionadas.includes(cat.id) && seleccionadas.length >= numLugares)
-                          ? 0.4
-                          : 1,
-                      }}
+                      disabled={deshabilitada}
+                      className={`px-3.5 py-1.5 rounded-full border text-sm transition-all duration-150 ${
+                        activa
+                          ? 'chip-active'
+                          : deshabilitada
+                          ? 'border-border-color text-text-secondary opacity-40 cursor-not-allowed'
+                          : 'border-border-color text-text-secondary hover:border-primary/50 hover:text-text-main cursor-pointer'
+                      }`}
                     >
                       {tCats(cat.nombre as any)}
                     </button>
@@ -250,21 +202,14 @@ export default function RouteConfig() {
         )}
       </div>
 
-      {/* Mensaje de progreso */}
-      <div style={{
-        backgroundColor: seleccionadas.length === numLugares ? '#CFFAFE' : '#FFF7ED',
-        border: `1px solid ${seleccionadas.length === numLugares ? '#0891B2' : '#E5E5E5'}`,
-        borderRadius: '12px',
-        padding: '12px 16px',
-        marginBottom: '16px',
-      }}>
-        <p style={{
-          color: seleccionadas.length === numLugares ? '#164E63' : '#888888',
-          fontSize: '13px',
-          margin: 0,
-          textAlign: 'center',
-        }}>
-          {seleccionadas.length === numLugares
+      {/* Panel de progreso */}
+      <div className={`rounded-xl px-4 py-3 mb-4 border transition-all duration-300 ${
+        listo
+          ? 'border-primary bg-gradient-to-r from-surface to-primary/5'
+          : 'border-border-color bg-accent-soft'
+      }`}>
+        <p className={`text-sm text-center ${listo ? 'text-text-main font-medium' : 'text-text-secondary'}`}>
+          {listo
             ? t('listoProgreso', { sel: seleccionadas.length, total: numLugares })
             : t('faltanCategorias', { sel: seleccionadas.length, total: numLugares })
           }
@@ -274,18 +219,8 @@ export default function RouteConfig() {
       {/* Botón generar ruta */}
       <button
         onClick={generarRuta}
-        disabled={seleccionadas.length !== numLugares}
-        style={{
-          width: '100%',
-          padding: '14px',
-          borderRadius: '12px',
-          border: 'none',
-          backgroundColor: seleccionadas.length !== numLugares ? '#E5E5E5' : '#0891B2',
-          color: seleccionadas.length !== numLugares ? '#888888' : 'white',
-          fontSize: '16px',
-          fontWeight: 600,
-          cursor: seleccionadas.length !== numLugares ? 'not-allowed' : 'pointer',
-        }}
+        disabled={!listo}
+        className="btn-primary py-3.5 text-base"
       >
         {t('siguiente')}
       </button>
