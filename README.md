@@ -30,7 +30,7 @@ No requiere descarga — funciona directo desde el navegador como PWA.
 | Base de datos | Supabase (PostgreSQL + PostGIS) |
 | Mapas | Mapbox GL JS + Directions API |
 | OCR y traducción | Gemini Flash |
-| Conversión de divisas | AwesomeAPI |
+| Conversión de divisas | Frankfurter API |
 | Hosting | Vercel |
 
 ---
