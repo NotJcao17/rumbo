@@ -13,14 +13,27 @@ async function obtenerTipoDeCambio(currency: string): Promise<number | null> {
   }
 
   try {
-    const res = await fetch(`https://economia.awesomeapi.com.br/json/last/MXN-${currency}`)
+    const res = await fetch(`https://economia.awesomeapi.com.br/json/last/MXN-${currency}`, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; RumboApp/1.0;)'
+      },
+      cache: 'no-store' // Evita interferencia de Next.js
+    })
+    
+    if (!res.ok) {
+      const text = await res.text()
+      console.error(`Error AwesomeAPI status: ${res.status}. Body: ${text}`)
+      return null
+    }
+
     const data = await res.json()
     const key = `MXN${currency}`
     const rate = parseFloat(data[key]?.bid)
     if (isNaN(rate)) return null
     cache[currency] = { rate, timestamp: ahora }
     return rate
-  } catch {
+  } catch (error) {
+    console.error("Error en obtenerTipoDeCambio catch:", error)
     return null
   }
 }
